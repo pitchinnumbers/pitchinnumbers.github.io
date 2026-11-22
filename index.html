@@ -161,6 +161,34 @@
   .uel .tag-hot{background:#FF6900;color:#0E0E0E;border-color:#FF6900}
   .uel .comp-head{border-bottom-color:rgba(255,105,0,.35)}
 
+
+  /* league phase table */
+  .lp{position:relative;z-index:1;margin:0 28px 48px;border:1px solid rgba(127,243,255,.35);background:rgba(5,11,42,.55)}
+  .lp summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 20px;font-size:20px;font-weight:500;letter-spacing:-.01em}
+  .lp summary::-webkit-details-marker{display:none}
+  .lp summary:hover{background:rgba(127,243,255,.06)}
+  .lp-arrow{display:inline-block;margin-left:10px;font-size:16px;color:#7FF3FF;transition:transform .2s}
+  .lp[open] .lp-arrow{transform:rotate(45deg)}
+  .lp-meta{opacity:.75}
+  .lp-body{padding:0 20px 20px;border-top:1px solid rgba(127,243,255,.2)}
+  .lp-note{margin:18px 0 14px;max-width:70ch;opacity:.9}
+  .lp-key{display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:14px;opacity:.85}
+  .lp-key i{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:-1px}
+  .k1,.z1 td:first-child{background:#7FF3FF}.k2,.z2 td:first-child{background:#3A6BE0}.k3,.z3 td:first-child{background:rgba(255,255,255,.18)}
+  .lp-scroll{overflow-x:auto}
+  .lp table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+  .lp th{font-family:var(--mono);font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:.06em;opacity:.7;text-align:right;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.2)}
+  .lp td{text-align:right;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap}
+  .lp th:nth-child(2),.lp td:nth-child(2){text-align:left;width:100%}
+  .lp td:first-child{text-align:center;color:#050B2A;font-family:var(--mono);font-size:12px;width:34px}
+  .z3 td:first-child{color:#fff}
+  .lp tr.z1:nth-child(8) td,.lp tr.z2:nth-child(24) td{border-bottom:1px dashed rgba(255,255,255,.45)}
+  .lp td.hi{color:#7FF3FF;font-weight:600}
+  .lp-src{margin-top:14px;opacity:.6}
+  .tag-link{color:inherit}
+  .tag-link:hover{color:#7FF3FF}
+  @media (max-width:600px){.lp{margin:0 16px 40px}.lp .opt,.lp th:nth-child(4),.lp td:nth-child(4),.lp th:nth-child(5),.lp td:nth-child(5),.lp th:nth-child(6),.lp td:nth-child(6){display:none}.lp td,.lp th{padding-left:6px;padding-right:6px}.lp summary{font-size:17px;flex-wrap:wrap}}
+
   @media (max-width:900px){
     .comp-body{grid-template-columns:1fr}
     .cc + .cc{border-left:0;border-top:1px solid rgba(255,255,255,.14)}
@@ -305,7 +333,7 @@
     <div class="cc"><div class="cl mono">Format</div><div class="cx">
       <h2 id="ucl-title">Champions<br>League</h2>
       <p>One European night a week: how a team's numbers at home hold up against the best in Europe.</p>
-      <ul class="tags mono"><li class="tag-hot">1 match</li><li>Post-match report</li><li>League phase table</li></ul>
+      <ul class="tags mono"><li class="tag-hot">1 match</li><li>Post-match report</li><li><a href="#ucl-table" class="tag-link" data-open="ucl-table">League phase table ↓</a></li></ul>
     </div></div>
     <div class="cc"><div class="cl mono">Signature chart: shot constellation</div><div class="cx comp-art" aria-hidden="true">
       <!-- a constellation of shots: each star a shot, size by xG, joined in sequence -->
@@ -331,6 +359,19 @@
       </div>
     </div></div>
   </div>
+
+  <details class="lp" id="ucl-table">
+    <summary><span>League phase table</span><span class="mono lp-meta">After Matchday 4 <span class="lp-arrow" aria-hidden="true">+</span></span></summary>
+    <div class="lp-body">
+      <p class="lp-note">Next week's match is 8th v 9th: <b>Club Brugge</b> and <b>Liverpool</b> are level on 9 points, separated only by goals scored.</p>
+      <div class="lp-key mono"><span><i class="k1"></i>1–8 Round of 16</span><span><i class="k2"></i>9–24 Knockout play-offs</span><span><i class="k3"></i>25–36 Out</span></div>
+      <div class="lp-scroll"><table>
+        <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th class="opt">GF</th><th class="opt">GA</th><th>GD</th><th>Pts</th></tr></thead>
+        <tbody><tr class="z1"><td>1</td><td>Paris Saint-Germain</td><td>4</td><td>4</td><td>0</td><td>0</td><td class="opt">20</td><td class="opt">5</td><td>+15</td><td><b>12</b></td></tr><tr class="z1"><td>2</td><td>Real Madrid</td><td>4</td><td>4</td><td>0</td><td>0</td><td class="opt">13</td><td class="opt">7</td><td>+6</td><td><b>12</b></td></tr><tr class="z1"><td>3</td><td>Arsenal</td><td>4</td><td>3</td><td>1</td><td>0</td><td class="opt">8</td><td class="opt">3</td><td>+5</td><td><b>10</b></td></tr><tr class="z1"><td>4</td><td>Como</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">19</td><td class="opt">6</td><td>+13</td><td><b>9</b></td></tr><tr class="z1"><td>5</td><td>Barcelona</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">14</td><td class="opt">6</td><td>+8</td><td><b>9</b></td></tr><tr class="z1"><td>6</td><td>Aston Villa</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">12</td><td class="opt">6</td><td>+6</td><td><b>9</b></td></tr><tr class="z1"><td>7</td><td>Manchester City</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">12</td><td class="opt">7</td><td>+5</td><td><b>9</b></td></tr><tr class="z1"><td>8</td><td class="hi">Liverpool</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">14</td><td class="opt">10</td><td>+4</td><td><b>9</b></td></tr><tr class="z2"><td>9</td><td class="hi">Club Brugge</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">11</td><td class="opt">7</td><td>+4</td><td><b>9</b></td></tr><tr class="z2"><td>10</td><td>Sporting CP</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">8</td><td class="opt">4</td><td>+4</td><td><b>9</b></td></tr><tr class="z2"><td>11</td><td>Real Betis</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">8</td><td class="opt">6</td><td>+2</td><td><b>9</b></td></tr><tr class="z2"><td>12</td><td>Borussia Dortmund</td><td>4</td><td>3</td><td>0</td><td>1</td><td class="opt">7</td><td class="opt">5</td><td>+2</td><td><b>9</b></td></tr><tr class="z2"><td>13</td><td>Bayern Munich</td><td>4</td><td>2</td><td>2</td><td>0</td><td class="opt">12</td><td class="opt">5</td><td>+7</td><td><b>8</b></td></tr><tr class="z2"><td>14</td><td>Stuttgart</td><td>4</td><td>2</td><td>1</td><td>1</td><td class="opt">7</td><td class="opt">4</td><td>+3</td><td><b>7</b></td></tr><tr class="z2"><td>15</td><td>Inter</td><td>4</td><td>2</td><td>0</td><td>2</td><td class="opt">8</td><td class="opt">6</td><td>+2</td><td><b>6</b></td></tr><tr class="z2"><td>16</td><td>LASK</td><td>4</td><td>2</td><td>0</td><td>2</td><td class="opt">10</td><td class="opt">9</td><td>+1</td><td><b>6</b></td></tr><tr class="z2"><td>17</td><td>Manchester United</td><td>4</td><td>2</td><td>0</td><td>2</td><td class="opt">8</td><td class="opt">8</td><td>0</td><td><b>6</b></td></tr><tr class="z2"><td>18</td><td>Galatasaray</td><td>4</td><td>2</td><td>0</td><td>2</td><td class="opt">8</td><td class="opt">9</td><td>−1</td><td><b>6</b></td></tr><tr class="z2"><td>19</td><td>Fenerbahçe</td><td>4</td><td>1</td><td>2</td><td>1</td><td class="opt">6</td><td class="opt">11</td><td>−5</td><td><b>5</b></td></tr><tr class="z2"><td>20</td><td>Roma</td><td>4</td><td>1</td><td>1</td><td>2</td><td class="opt">10</td><td class="opt">8</td><td>+2</td><td><b>4</b></td></tr><tr class="z2"><td>21</td><td>Shakhtar Donetsk</td><td>4</td><td>1</td><td>1</td><td>2</td><td class="opt">4</td><td class="opt">4</td><td>0</td><td><b>4</b></td></tr><tr class="z2"><td>22</td><td>Viking</td><td>4</td><td>1</td><td>1</td><td>2</td><td class="opt">9</td><td class="opt">10</td><td>−1</td><td><b>4</b></td></tr><tr class="z2"><td>23</td><td>Atlético Madrid</td><td>4</td><td>1</td><td>1</td><td>2</td><td class="opt">4</td><td class="opt">5</td><td>−1</td><td><b>4</b></td></tr><tr class="z2"><td>24</td><td>PSV Eindhoven</td><td>4</td><td>1</td><td>1</td><td>2</td><td class="opt">3</td><td class="opt">4</td><td>−1</td><td><b>4</b></td></tr><tr class="z3"><td>25</td><td>Bodø/Glimt</td><td>4</td><td>1</td><td>1</td><td>2</td><td class="opt">4</td><td class="opt">9</td><td>−5</td><td><b>4</b></td></tr><tr class="z3"><td>26</td><td>Porto</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">6</td><td class="opt">7</td><td>−1</td><td><b>3</b></td></tr><tr class="z3"><td>27</td><td>Napoli</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">6</td><td class="opt">11</td><td>−5</td><td><b>3</b></td></tr><tr class="z3"><td>28</td><td>Villarreal</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">8</td><td class="opt">14</td><td>−6</td><td><b>3</b></td></tr><tr class="z3"><td>29</td><td>AEK Athens</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">5</td><td class="opt">11</td><td>−6</td><td><b>3</b></td></tr><tr class="z3"><td>30</td><td>RB Leipzig</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">5</td><td class="opt">11</td><td>−6</td><td><b>3</b></td></tr><tr class="z3"><td>31</td><td>Sabah</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">4</td><td class="opt">10</td><td>−6</td><td><b>3</b></td></tr><tr class="z3"><td>32</td><td>Feyenoord</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">4</td><td class="opt">11</td><td>−7</td><td><b>3</b></td></tr><tr class="z3"><td>33</td><td>Lens</td><td>4</td><td>1</td><td>0</td><td>3</td><td class="opt">4</td><td class="opt">16</td><td>−12</td><td><b>3</b></td></tr><tr class="z3"><td>34</td><td>Slavia Prague</td><td>4</td><td>0</td><td>1</td><td>3</td><td class="opt">5</td><td class="opt">9</td><td>−4</td><td><b>1</b></td></tr><tr class="z3"><td>35</td><td>Lille</td><td>4</td><td>0</td><td>1</td><td>3</td><td class="opt">4</td><td class="opt">10</td><td>−6</td><td><b>1</b></td></tr><tr class="z3"><td>36</td><td>Slovan Bratislava</td><td>4</td><td>0</td><td>0</td><td>4</td><td class="opt">1</td><td class="opt">17</td><td>−16</td><td><b>0</b></td></tr></tbody>
+      </table></div>
+      <p class="mono lp-src">Standings after Matchday 4 (4–5 Nov 2026). Matchday 5 is on 24–25 Nov.</p>
+    </div>
+  </details>
 </section>
 
 <section class="comp uel" id="uel" aria-labelledby="uel-title">
@@ -421,5 +462,9 @@
   <span>Hosted on GitHub Pages</span>
 </footer>
 
+<script>
+{document.querySelectorAll('[data-open]').forEach(a=>a.addEventListener('click',()=>{const d=document.getElementById(a.dataset.open);if(d)d.open=true;}));
+ if(location.hash==='#ucl-table'){const d=document.getElementById('ucl-table');if(d)d.open=true;}}
+</script>
 </body>
 </html>
