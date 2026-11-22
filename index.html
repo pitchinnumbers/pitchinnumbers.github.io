@@ -128,25 +128,38 @@
   .fixture .meta{opacity:.75}
   .fixture.soon{opacity:.6;border-style:dashed}
 
+
+  .match{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:16px 0 14px}
+  .side{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-width:0}
+  .crest{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--c1);color:var(--c3);
+         box-shadow:0 0 0 3px var(--c2),0 0 0 4px rgba(255,255,255,.25);font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:.04em}
+  .tn{font-weight:500;font-size:16px;letter-spacing:-.01em;line-height:1.2}
+  .vs{opacity:.6}
+  .fixture .meta{display:block;text-align:center}
+  .fixture > .meta:first-child,.fixture.soon .meta{text-align:left}
+
   /* Premier League: royal purple, electric green, magenta, diagonal energy */
   .pl{background:
-      repeating-linear-gradient(135deg, rgba(0,255,133,.05) 0 2px, transparent 2px 26px),
-      linear-gradient(120deg,#37003C 0%,#2A0030 55%,#1C0021 100%)}
+      repeating-linear-gradient(135deg, rgba(0,255,133,.07) 0 2px, transparent 2px 26px),
+      radial-gradient(ellipse 60% 80% at 50% 50%, rgba(233,0,82,.22), transparent 70%), linear-gradient(120deg,#4A0052 0%,#37003C 50%,#26002A 100%)}
   .pl h2{font-weight:600;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.05em}
   .pl h2 em{font-style:normal;color:#00FF85}
   .pl .accent,.pl .fixture .teams{color:#fff}
   .pl .tag-hot{background:#00FF85;color:#37003C;border-color:#00FF85}
-  .pl .fixture{border-left:4px solid #E90052}
+  .pl .fixture{border-left:4px solid #E90052;background:rgba(0,0,0,.18)}
+  .pl::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#00FF85,#E90052);z-index:2}
 
   /* Champions League: night-sky blue, light, cyan + magenta accents, constellation */
-  .ucl{background:radial-gradient(ellipse 70% 90% at 70% 40%, #1B3FA8 0%, #0B1D5C 45%, #050B2A 100%)}
+  .ucl{background:radial-gradient(ellipse 45% 70% at 50% 45%, rgba(0,225,255,.20), transparent 70%), radial-gradient(ellipse 80% 100% at 70% 40%, #2350D0 0%, #0D2270 45%, #050B2A 100%)}
   .ucl h2{padding-bottom:.1em;margin-bottom:12px;font-weight:400;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.03em;
           background:linear-gradient(100deg,#fff 30%,#7FF3FF 70%,#FF6EC7);-webkit-background-clip:text;background-clip:text;color:transparent}
   .ucl .fixture{background:rgba(255,255,255,.04);border-color:rgba(127,243,255,.35);box-shadow:0 0 40px rgba(0,225,255,.08) inset}
   .ucl .tag-hot{border-color:#7FF3FF;color:#7FF3FF}
+  .ucl::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#7FF3FF,#FF6EC7);z-index:2}
 
   /* Europa League: orange on rich black, angled slab type, faceted "hammered metal" */
-  .uel{background:linear-gradient(160deg,#1A1A1A 0%,#0E0E0E 60%,#0A0A0A 100%)}
+  .uel{background:radial-gradient(ellipse 50% 70% at 50% 55%, rgba(255,105,0,.28), transparent 70%), linear-gradient(160deg,#1A1A1A 0%,#0E0E0E 60%,#0A0A0A 100%)}
+  .uel::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:#FF6900;z-index:2}
   .uel h2{font-family:'Zilla Slab',Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.02em;text-transform:uppercase;color:#FF6900}
   .uel .fixture{border-color:rgba(255,105,0,.5);border-top:4px solid #FF6900}
   .uel .tag-hot{background:#FF6900;color:#0E0E0E;border-color:#FF6900}
@@ -276,7 +289,7 @@
     <div class="cc"><div class="cl mono">Next up: Matchweek 11</div><div class="cx">
       <div class="fixture">
         <span class="mono meta">Match of the Week #01</span>
-        <div class="teams">Liverpool v Manchester United</div>
+        <div class="match"><div class="side"><span class="crest" style="--c1:#C8102E;--c2:#F6EB61;--c3:#fff">LIV</span><span class="tn">Liverpool</span></div><span class="vs mono">vs</span><div class="side"><span class="crest" style="--c1:#DA291C;--c2:#111;--c3:#FBE122">MUN</span><span class="tn">Man United</span></div></div>
         <span class="mono meta">Sun 22 Nov, 16:30 GMT, Anfield</span>
       </div>
       <div class="fixture soon">
@@ -315,7 +328,7 @@
     <div class="cc"><div class="cl mono">Next up: League phase, MD5</div><div class="cx">
       <div class="fixture">
         <span class="mono meta">Next European night</span>
-        <div class="teams">Club Brugge v Liverpool</div>
+        <div class="match"><div class="side"><span class="crest" style="--c1:#0067B1;--c2:#111;--c3:#fff">CLB</span><span class="tn">Club Brugge</span></div><span class="vs mono">vs</span><div class="side"><span class="crest" style="--c1:#C8102E;--c2:#F6EB61;--c3:#fff">LIV</span><span class="tn">Liverpool</span></div></div>
         <span class="mono meta">Wed 25 Nov</span>
       </div>
     </div></div>
@@ -346,7 +359,7 @@
     <div class="cc"><div class="cl mono">Next up: League phase, MD5</div><div class="cx">
       <div class="fixture">
         <span class="mono meta">Next Thursday night</span>
-        <div class="teams">Celta v Bournemouth</div>
+        <div class="match"><div class="side"><span class="crest" style="--c1:#8AC3EE;--c2:#E5254E;--c3:#0B2340">CEL</span><span class="tn">Celta</span></div><span class="vs mono">vs</span><div class="side"><span class="crest" style="--c1:#DA291C;--c2:#111;--c3:#fff">BOU</span><span class="tn">Bournemouth</span></div></div>
         <span class="mono meta">Thu 26 Nov, 18:45 CET</span>
       </div>
     </div></div>
