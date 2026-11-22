@@ -4,204 +4,410 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pitch in Numbers — Premier League through data</title>
-<meta name="description" content="Weekly Premier League data analysis: Match of the Week previews and post-match reports by Gerasimos Galanos.">
+<meta name="description" content="Weekly Premier League data analysis by Gerasimos Galanos: a preview with predictions before kick-off, a post-match report after, and an honest check of what the data got right.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23012B1D'/%3E%3Cg transform='translate(14 13) scale(.105) skewX(-20)'%3E%3Cpath d='M 95 0 H 255 A 85 85 0 0 1 255 170 H 95 V 112 H 250 A 27 27 0 0 0 250 58 H 95 Z' fill='%23EEF3EF'/%3E%3Cpath d='M 95 112 H 175 V 300 H 95 Z' fill='%23EEF3EF'/%3E%3Crect x='-5' y='32' width='22' height='26' fill='%2301B36C'/%3E%3Crect x='25' y='16' width='22' height='42' fill='%2301B36C'/%3E%3Crect x='55' y='0' width='22' height='58' fill='%2301B36C'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Zilla+Slab:ital,wght@1,700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b1410;
-    --panel:#111d17;
-    --line:#1f3328;
-    --text:#e8f0eb;
-    --muted:#8fa89a;
-    --accent:#3ddc84;
-    --accent-2:#f5c542;
-    --mono:'JetBrains Mono', ui-monospace, monospace;
-    --sans:'Space Grotesk', system-ui, sans-serif;
+    --forest:#012B1D;      /* base */
+    --forest-deep:#011F15; /* hero floor, panels */
+    --jungle:#01B36C;      /* data, links, logo */
+    --peach:#FEB192;       /* goals, call to action */
+    --ivory:#EEF3EF;       /* type */
+    --sage:#8DB5A2;        /* secondary type */
+    --grid:rgba(238,243,239,.14);
+    --sans:'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  body{background:var(--forest);color:var(--ivory);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--peach);outline-offset:3px}
+  .mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;line-height:1.7}
+  .count{color:var(--sage)}
 
-  /* nav */
-  nav{position:sticky;top:0;background:rgba(11,20,16,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);letter-spacing:-.01em}
-  .logo:hover{text-decoration:none}
-  .logo svg{width:28px;height:28px}
-  nav ul{display:flex;gap:24px;list-style:none;font-size:.95rem}
-  nav ul a{color:var(--muted)}
-  nav ul a:hover{color:var(--text);text-decoration:none}
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:min(100vh,1000px);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;
+        background:radial-gradient(ellipse 55% 60% at 50% 52%, rgba(1,179,108,.38), rgba(1,179,108,0) 70%), var(--forest)}
+  nav{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--grid)}
+  nav .brand{display:flex;align-items:center;gap:10px;padding:18px 28px;border-right:1px solid var(--grid)}
+  nav .brand svg{width:30px;height:22px}
+  nav .brand span{font-weight:600;font-size:15px;letter-spacing:-.01em}
+  nav .links{grid-column:2 / 4;display:flex;justify-content:space-between;align-items:center;padding:0 28px}
+  nav .links a{padding:18px 0}
+  nav .links a:hover{color:var(--peach)}
 
-  /* hero */
-  .hero{position:relative;padding:96px 0 80px;overflow:hidden;border-bottom:1px solid var(--line)}
-  .hero-pitch{position:absolute;right:-220px;top:50%;transform:translateY(-50%);width:600px;opacity:.14;pointer-events:none}
-  .eyebrow{font-family:var(--mono);font-size:.8rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
-  h1{font-size:clamp(2.6rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.03em;max-width:12ch}
-  h1 span{color:var(--accent)}
-  .lede{margin-top:24px;font-size:1.2rem;color:var(--muted);max-width:52ch}
-  .cta{display:flex;gap:12px;margin-top:36px;flex-wrap:wrap}
-  .btn{display:inline-block;padding:12px 20px;border-radius:8px;font-weight:500;border:1px solid var(--line)}
-  .btn.primary{background:var(--accent);color:#06210f;border-color:var(--accent)}
-  .btn:hover{text-decoration:none;filter:brightness(1.08)}
-  .btn.ghost{color:var(--text)}
+  .stage{display:grid;grid-template-columns:1fr 1fr 1fr;position:relative}
+  .col{padding:28px;display:flex;flex-direction:column}
+  .col + .col{border-left:1px solid var(--grid)}
+  .left{justify-content:space-between;padding-bottom:5vw}
+  .mission{max-width:30ch;margin-top:22vh}
+  .stat{display:flex;align-items:center;gap:18px;border-top:1px solid var(--grid);padding-top:22px}
+  .stat b{font-family:var(--sans);font-weight:400;font-size:64px;line-height:1;color:var(--peach);letter-spacing:-.03em}
+  .stat i{font-style:normal;border-left:1px solid var(--grid);padding-left:18px}
 
-  section{padding:80px 0;border-bottom:1px solid var(--line)}
-  h2{font-size:2rem;letter-spacing:-.02em;margin-bottom:12px}
-  .sub{color:var(--muted);max-width:60ch;margin-bottom:40px}
+  .center{align-items:center;justify-content:center;padding:0}
+  .center svg{width:min(92%,420px);height:auto;filter:drop-shadow(0 0 18px rgba(254,177,146,.45))}
 
-  /* cycle */
-  .cycle{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px}
-  .step .num{font-family:var(--mono);color:var(--accent-2);font-size:.85rem}
-  .step h3{margin:10px 0 8px;font-size:1.2rem}
-  .step p{color:var(--muted);font-size:.97rem}
+  .right{justify-content:center;gap:28px}
+  .next{display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:center;border:1px solid var(--grid);padding:12px;background:rgba(1,31,21,.55);max-width:360px;margin-left:auto}
+  .next svg{width:130px;height:84px;display:block;background:var(--forest-deep)}
+  .next strong{display:block;font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:-.01em;text-transform:none;margin-top:4px;color:var(--ivory)}
+  .pitchline{max-width:36ch;margin-left:auto;text-align:left}
+  .cta{display:inline-flex;justify-content:space-between;align-items:center;gap:40px;background:var(--peach);color:var(--forest);padding:13px 16px;max-width:360px;width:100%;margin-left:auto;font-weight:500}
+  .cta:hover{background:#ffc3aa}
 
-  /* status */
-  .status{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:28px}
-  .dot{width:10px;height:10px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 0 6px rgba(245,197,66,.15);flex-shrink:0}
-  .status strong{display:block}
-  .status span{color:var(--muted)}
+  .plus{position:absolute;width:13px;height:13px;transform:translate(-50%,-50%);pointer-events:none}
+  .plus::before,.plus::after{content:"";position:absolute;background:var(--ivory);opacity:.7}
+  .plus::before{left:6px;top:0;width:1px;height:13px}
+  .plus::after{top:6px;left:0;height:1px;width:13px}
 
-  /* about */
-  .about{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
-  .about p{color:var(--muted);margin-bottom:16px}
-  .about p strong{color:var(--text);font-weight:500}
-  .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-  .tag{font-family:var(--mono);font-size:.8rem;padding:6px 10px;border:1px solid var(--line);border-radius:6px;color:var(--text);background:var(--panel)}
-  .links{list-style:none;display:grid;gap:10px}
-  .links a{display:flex;justify-content:space-between;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--text)}
-  .links a span{color:var(--muted);font-family:var(--mono);font-size:.85rem}
-  .links a:hover{border-color:var(--accent);text-decoration:none}
+  .wordmark{font-family:var(--sans);font-weight:600;font-size:12.4vw;line-height:.8;letter-spacing:-.06em;white-space:nowrap;
+            text-align:center;padding:0 1vw 1.6vw;margin-top:-3.2vw;position:relative;z-index:2;color:var(--ivory)}
 
-  footer{padding:40px 0;color:var(--muted);font-size:.85rem}
-  footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  /* ---------- sections ---------- */
+  section{border-top:1px solid var(--grid)}
+  .sec-head{display:grid;grid-template-columns:1fr 2fr;border-bottom:1px solid var(--grid)}
+  .sec-head > *{padding:22px 28px}
+  .sec-head h2{font-weight:500;font-size:clamp(28px,3.2vw,44px);letter-spacing:-.03em;line-height:1.05;border-left:1px solid var(--grid)}
+  .cycle{display:grid;grid-template-columns:repeat(3,1fr)}
+  .cycle article{padding:28px 28px 40px}
+  .cycle article + article{border-left:1px solid var(--grid)}
+  .cycle .when{color:var(--peach)}
+  .cycle h3{font-weight:500;font-size:24px;letter-spacing:-.02em;margin:40px 0 10px}
+  .cycle p{color:var(--sage);max-width:34ch}
+  .status{border-top:1px solid var(--grid);padding:18px 28px;display:flex;gap:12px;align-items:center}
+  .status .dot{width:8px;height:8px;border-radius:50%;background:var(--peach);box-shadow:0 0 0 5px rgba(254,177,146,.18)}
 
-  @media (max-width:760px){
-    nav ul{display:none}
-    .cycle{grid-template-columns:1fr}
-    .about{grid-template-columns:1fr}
-    .hero{padding:72px 0 56px}
-    .hero-pitch{width:420px;right:-160px}
+  .about{display:grid;grid-template-columns:1fr 2fr}
+  .about > div{padding:28px 28px 48px}
+  .about > div + div{border-left:1px solid var(--grid)}
+  .about p{font-size:clamp(20px,2vw,26px);line-height:1.4;letter-spacing:-.015em;max-width:30ch;margin-bottom:22px}
+  .about p span{color:var(--sage)}
+  .tools{display:flex;flex-wrap:wrap;gap:8px}
+  .tools li{list-style:none;border:1px solid var(--grid);padding:6px 10px}
+
+  .contact{display:grid;grid-template-columns:1fr 2fr}
+  .contact > div:first-child{padding:28px}
+  .links-grid{display:grid;grid-template-columns:1fr 1fr;border-left:1px solid var(--grid)}
+  .links-grid a{padding:28px;display:flex;flex-direction:column;gap:30px;min-height:150px}
+  .links-grid a:nth-child(even){border-left:1px solid var(--grid)}
+  .links-grid a:nth-child(n+3){border-top:1px solid var(--grid)}
+  .links-grid a:hover{background:var(--forest-deep)}
+  .links-grid a:hover .go{color:var(--peach)}
+  .links-grid .big{font-size:24px;font-weight:500;letter-spacing:-.02em}
+  .go{margin-top:auto;color:var(--sage)}
+
+  .credits{display:grid;grid-template-columns:1fr 2fr}
+  .credits > div{padding:28px 28px 56px}
+  .credits > div + div{border-left:1px solid var(--grid);color:var(--sage);max-width:none}
+  .credits p{max-width:62ch}
+  footer{border-top:1px solid var(--grid);display:flex;justify-content:space-between;padding:20px 28px;color:var(--sage);flex-wrap:wrap;gap:12px}
+
+
+  /* ---------- competitions ---------- */
+  .comp{position:relative;overflow:hidden;border-top:1px solid var(--grid)}
+  .comp-head{display:flex;justify-content:space-between;gap:16px;padding:16px 28px;border-bottom:1px solid rgba(255,255,255,.14);position:relative;z-index:1}
+  .comp-body{display:grid;grid-template-columns:repeat(3,1fr);position:relative;z-index:1}
+  .cc{display:flex;flex-direction:column;min-width:0}
+  .cl{padding:14px 28px;border-bottom:1px solid rgba(255,255,255,.14);opacity:.75}
+  .cx{padding:32px 28px 44px;flex:1}
+  .cc + .cc{border-left:1px solid rgba(255,255,255,.14)}
+  .comp h2{line-height:.92;margin-bottom:22px}
+  .comp p{max-width:36ch;opacity:.82}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .tags li{list-style:none;border:1px solid rgba(255,255,255,.28);padding:5px 9px}
+  .comp-art{display:flex;align-items:center;justify-content:center}
+  .comp-art svg{width:100%;max-width:340px;height:auto}
+  .fixture{border:1px solid rgba(255,255,255,.22);padding:18px}
+  .fixture + .fixture{margin-top:14px}
+  .fixture .teams{font-size:22px;font-weight:500;letter-spacing:-.02em;line-height:1.2;margin:8px 0 14px}
+  .fixture .meta{opacity:.75}
+  .fixture.soon{opacity:.6;border-style:dashed}
+
+  /* Premier League: royal purple, electric green, magenta, diagonal energy */
+  .pl{background:
+      repeating-linear-gradient(135deg, rgba(0,255,133,.05) 0 2px, transparent 2px 26px),
+      linear-gradient(120deg,#37003C 0%,#2A0030 55%,#1C0021 100%)}
+  .pl h2{font-weight:600;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.05em}
+  .pl h2 em{font-style:normal;color:#00FF85}
+  .pl .accent,.pl .fixture .teams{color:#fff}
+  .pl .tag-hot{background:#00FF85;color:#37003C;border-color:#00FF85}
+  .pl .fixture{border-left:4px solid #E90052}
+
+  /* Champions League: night-sky blue, light, cyan + magenta accents, constellation */
+  .ucl{background:radial-gradient(ellipse 70% 90% at 70% 40%, #1B3FA8 0%, #0B1D5C 45%, #050B2A 100%)}
+  .ucl h2{padding-bottom:.1em;margin-bottom:12px;font-weight:400;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.03em;
+          background:linear-gradient(100deg,#fff 30%,#7FF3FF 70%,#FF6EC7);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ucl .fixture{background:rgba(255,255,255,.04);border-color:rgba(127,243,255,.35);box-shadow:0 0 40px rgba(0,225,255,.08) inset}
+  .ucl .tag-hot{border-color:#7FF3FF;color:#7FF3FF}
+
+  /* Europa League: orange on rich black, angled slab type, faceted "hammered metal" */
+  .uel{background:linear-gradient(160deg,#1A1A1A 0%,#0E0E0E 60%,#0A0A0A 100%)}
+  .uel h2{font-family:'Zilla Slab',Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.02em;text-transform:uppercase;color:#FF6900}
+  .uel .fixture{border-color:rgba(255,105,0,.5);border-top:4px solid #FF6900}
+  .uel .tag-hot{background:#FF6900;color:#0E0E0E;border-color:#FF6900}
+  .uel .comp-head{border-bottom-color:rgba(255,105,0,.35)}
+
+  @media (max-width:900px){
+    .comp-body{grid-template-columns:1fr}
+    .cc + .cc{border-left:0;border-top:1px solid rgba(255,255,255,.14)}
+    .comp-art svg{max-width:280px}
+    nav{grid-template-columns:1fr}
+    nav .brand{border-right:0}
+    nav .links{grid-column:auto;border-top:1px solid var(--grid);overflow-x:auto;gap:22px}
+    .stage{grid-template-columns:1fr}
+    .col + .col{border-left:0;border-top:1px solid var(--grid)}
+    .mission{margin-top:4vh}
+    .center{padding:28px 0}
+    .stat{margin-top:28px}
+    .next,.cta,.pitchline{margin-left:0}
+    .plus{display:none}
+    .wordmark{font-size:11.6vw;margin-top:0;padding-top:24px}
+    .sec-head,.about,.credits,.contact{grid-template-columns:1fr}
+    .links-grid{border-left:0;border-top:1px solid var(--grid)}
+    .links-grid a:nth-child(even){border-left:0}
+    .links-grid a + a{border-top:1px solid var(--grid)}
+    .sec-head h2,.about > div + div,.credits > div + div{border-left:0;border-top:1px solid var(--grid)}
+    .cycle,.links-grid{grid-template-columns:1fr}
+    .cycle article + article,.links-grid a + a{border-left:0;border-top:1px solid var(--grid)}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .center svg .shot{opacity:0;animation:land .5s ease-out forwards}
+    @keyframes land{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
   }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap">
-    <a href="#" class="logo" aria-label="Pitch in Numbers home">
-      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect x="2" y="5" width="28" height="22" rx="3" stroke="#3ddc84" stroke-width="2"/>
-        <line x1="16" y1="5" x2="16" y2="27" stroke="#3ddc84" stroke-width="2"/>
-        <circle cx="16" cy="16" r="4" stroke="#3ddc84" stroke-width="2"/>
-        <rect x="21" y="18" width="2.5" height="5" fill="#f5c542"/>
-        <rect x="24.5" y="14" width="2.5" height="9" fill="#f5c542"/>
-      </svg>
-      Pitch in Numbers
-    </a>
-    <ul>
-      <li><a href="#motw">Match of the Week</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#data">Data</a></li>
-    </ul>
-  </div>
-</nav>
-
 <header class="hero">
-  <svg class="hero-pitch" viewBox="0 0 680 440" fill="none" aria-hidden="true">
-    <g stroke="#3ddc84" stroke-width="3">
-      <rect x="10" y="10" width="660" height="420"/>
-      <line x1="340" y1="10" x2="340" y2="430"/>
-      <circle cx="340" cy="220" r="60"/>
-      <rect x="10" y="110" width="100" height="220"/>
-      <rect x="570" y="110" width="100" height="220"/>
-      <rect x="10" y="170" width="36" height="100"/>
-      <rect x="634" y="170" width="36" height="100"/>
-    </g>
-    <g fill="#f5c542">
-      <circle cx="590" cy="200" r="9"/><circle cx="610" cy="240" r="14"/><circle cx="560" cy="250" r="6"/>
-      <circle cx="600" cy="180" r="5"/><circle cx="625" cy="215" r="18"/><circle cx="545" cy="210" r="4"/>
-    </g>
-  </svg>
-  <div class="wrap">
-    <p class="eyebrow">Premier League · Season 2026/27</p>
-    <h1>The game, <span>in numbers.</span></h1>
-    <p class="lede">Every week I pick the most interesting Premier League match, make data-driven predictions before kick-off — and check them publicly after the final whistle.</p>
-    <div class="cta">
-      <a class="btn primary" href="#motw">How it works</a>
-      <a class="btn ghost" href="https://github.com/pitchinnumbers">See the code →</a>
+  <nav aria-label="Main">
+    <a class="brand" href="#" aria-label="Pitch in Numbers, home">
+      <svg viewBox="-120 -10 470 320" aria-hidden="true"><g transform="skewX(-20)">
+        <path d="M 95 0 H 255 A 85 85 0 0 1 255 170 H 95 V 112 H 250 A 27 27 0 0 0 250 58 H 95 Z" fill="#EEF3EF"/>
+        <path d="M 95 112 H 175 V 300 H 95 Z" fill="#EEF3EF"/>
+        <rect x="-5" y="32" width="22" height="26" fill="#01B36C"/><rect x="25" y="16" width="22" height="42" fill="#01B36C"/><rect x="55" y="0" width="22" height="58" fill="#01B36C"/>
+      </g></svg>
+      <span>Pitch in Numbers</span>
+    </a>
+    <div class="links mono">
+      <a href="#pl">Premier League <span class="count">[02]</span></a>
+      <a href="#ucl">Champions League <span class="count">[01]</span></a>
+      <a href="#uel">Europa League <span class="count">[01]</span></a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
     </div>
+  </nav>
+
+  <div class="stage">
+    <div class="col left">
+      <p class="mono mission">Explaining the Premier League and Europe through data, one match at a time.</p>
+      <div class="stat"><b>20</b><i class="mono">Premier League<br>clubs tracked</i></div>
+    </div>
+
+    <div class="col center" aria-hidden="true">
+      <!-- half pitch, shot map: bubble size = xG, peach = goal -->
+      <svg viewBox="0 0 400 430" fill="none">
+        <g stroke="#EEF3EF" stroke-opacity=".85" stroke-width="2">
+          <rect x="20" y="20" width="360" height="390"/>
+          <rect x="95" y="20" width="210" height="110"/>
+          <rect x="155" y="20" width="90" height="40"/>
+          <path d="M 152 130 A 62 62 0 0 0 248 130"/>
+          <path d="M 120 410 A 80 80 0 0 1 280 410"/>
+          <circle cx="200" cy="96" r="2.5" fill="#EEF3EF"/>
+        </g>
+        <g stroke-width="2">
+          <circle class="shot" style="animation-delay:.10s;transform-origin:196px 78px" cx="196" cy="78" r="26" fill="#FEB192" stroke="#FEB192"/>
+          <circle class="shot" style="animation-delay:.18s;transform-origin:232px 104px" cx="232" cy="104" r="16" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+          <circle class="shot" style="animation-delay:.26s;transform-origin:160px 112px" cx="160" cy="112" r="13" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+          <circle class="shot" style="animation-delay:.34s;transform-origin:214px 60px" cx="214" cy="60" r="30" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+          <circle class="shot" style="animation-delay:.42s;transform-origin:120px 168px" cx="120" cy="168" r="7" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+          <circle class="shot" style="animation-delay:.50s;transform-origin:276px 176px" cx="276" cy="176" r="8" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+          <circle class="shot" style="animation-delay:.58s;transform-origin:204px 196px" cx="204" cy="196" r="10" fill="#FEB192" stroke="#FEB192"/>
+          <circle class="shot" style="animation-delay:.66s;transform-origin:250px 236px" cx="250" cy="236" r="6" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+          <circle class="shot" style="animation-delay:.74s;transform-origin:150px 250px" cx="150" cy="250" r="5" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+          <circle class="shot" style="animation-delay:.82s;transform-origin:188px 150px" cx="188" cy="150" r="11" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="col right">
+      <a class="next mono" href="#pl">
+        <svg viewBox="0 0 130 84" aria-hidden="true">
+          <path d="M8 74 H30 V66 H52 V60 H64 V40 H90 V34 H104 V18 H124" stroke="#01B36C" stroke-width="2.5" fill="none"/>
+          <path d="M8 74 H40 V70 H70 V58 H96 V52 H124" stroke="#8DB5A2" stroke-width="2" fill="none"/>
+          <circle cx="64" cy="40" r="3.5" fill="#FEB192"/><circle cx="104" cy="18" r="3.5" fill="#FEB192"/>
+        </svg>
+        <span>Match of the Week #01<strong>Liverpool v Man United</strong></span>
+      </a>
+      <p class="mono pitchline">A preview with predictions before kick-off, a report after the final whistle, and an honest check of what the data got right.</p>
+      <a class="cta mono" href="https://www.instagram.com/pitchinnumbers/">Follow the project <span aria-hidden="true">→</span></a>
+    </div>
+
+    <span class="plus" style="left:0;top:0;left:33.333%"></span>
+    <span class="plus" style="left:66.666%;top:0"></span>
   </div>
+
+  <div class="wordmark" aria-hidden="true">Pitch in Numbers</div>
 </header>
 
-<section id="motw">
-  <div class="wrap">
-    <h2>Match of the Week</h2>
-    <p class="sub">One match, one analytical cycle — the same way a club's data department prepares for and reviews a game.</p>
-    <div class="cycle">
-      <div class="step">
-        <div class="num">01 · BEFORE</div>
-        <h3>Preview</h3>
-        <p>Opposition-style report on both teams: form, xG for and against, where shots come from, key players — plus 2–3 concrete predictions.</p>
+
+<section class="comp pl" id="pl" aria-labelledby="pl-title">
+  <div class="comp-head mono"><span>Premier League <span class="count">[02 a week]</span></span><span>Weekends</span></div>
+  <div class="comp-body"><span class="plus" style="left:33.333%;top:0"></span><span class="plus" style="left:66.666%;top:0"></span>
+    <div class="cc"><div class="cl mono">Format</div><div class="cx">
+      <h2 id="pl-title">Premier<br><em>League</em></h2>
+      <p>The two biggest matches of every matchweek, with the full cycle: preview with predictions, post-match report, and the check.</p>
+      <ul class="tags mono"><li class="tag-hot">2 matches</li><li>xG timeline</li><li>Shot maps</li><li>Predictions</li></ul>
+    </div></div>
+    <div class="cc"><div class="cl mono">Signature chart: xG race</div><div class="cx comp-art" aria-hidden="true">
+      <!-- xG race: home in green, away in magenta, dots = goals -->
+      <svg viewBox="0 0 340 220" fill="none">
+        <g stroke="rgba(255,255,255,.16)"><path d="M20 190 H320"/><path d="M20 140 H320"/><path d="M20 90 H320"/><path d="M20 40 H320"/><path d="M170 30 V190" stroke-dasharray="3 5"/></g>
+        <path d="M20 190 H58 V176 H96 V168 H128 V132 H170 V124 H214 V98 H246 V84 H282 V56 H320" stroke="#00FF85" stroke-width="3"/>
+        <path d="M20 190 H74 V182 H140 V160 H200 V150 H262 V120 H320" stroke="#E90052" stroke-width="3"/>
+        <circle cx="128" cy="132" r="6" fill="#00FF85"/><circle cx="282" cy="56" r="6" fill="#00FF85"/><circle cx="262" cy="120" r="6" fill="#E90052"/>
+        <g font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,.6)"><text x="20" y="210">0'</text><text x="160" y="210">45'</text><text x="300" y="210">90'</text></g>
+      </svg>
+    </div></div>
+    <div class="cc"><div class="cl mono">Next up: Matchweek 11</div><div class="cx">
+      <div class="fixture">
+        <span class="mono meta">Match of the Week #01</span>
+        <div class="teams">Liverpool v Manchester United</div>
+        <span class="mono meta">Sun 22 Nov, 16:30 GMT, Anfield</span>
       </div>
-      <div class="step">
-        <div class="num">02 · AFTER</div>
-        <h3>Post-match report</h3>
-        <p>xG timeline, shot maps and three takeaways: what worked, what didn't, what should change.</p>
+      <div class="fixture soon">
+        <span class="mono meta">Match #02</span>
+        <div class="teams">Picked each matchweek</div>
+        <span class="mono meta">From the following round</span>
       </div>
-      <div class="step">
-        <div class="num">03 · ACCOUNTABILITY</div>
-        <h3>Did the data get it right?</h3>
-        <p>Every prediction is graded in public. When I'm wrong, I explain why — that's where the learning is.</p>
-      </div>
-    </div>
-    <div class="status" style="margin-top:24px">
-      <div class="dot"></div>
-      <div>
-        <strong>First Match of the Week — coming soon</strong>
-        <span>The data pipeline is being built. Follow along on X and Instagram.</span>
-      </div>
-    </div>
+    </div></div>
   </div>
+</section>
+
+<section class="comp ucl" id="ucl" aria-labelledby="ucl-title">
+  <div class="comp-head mono"><span>Champions League <span class="count">[01 a week]</span></span><span>Tuesday / Wednesday nights</span></div>
+  <div class="comp-body"><span class="plus" style="left:33.333%;top:0"></span><span class="plus" style="left:66.666%;top:0"></span>
+    <div class="cc"><div class="cl mono">Format</div><div class="cx">
+      <h2 id="ucl-title">Champions<br>League</h2>
+      <p>One European night a week: how a team's numbers at home hold up against the best in Europe.</p>
+      <ul class="tags mono"><li class="tag-hot">1 match</li><li>Post-match report</li><li>League phase table</li></ul>
+    </div></div>
+    <div class="cc"><div class="cl mono">Signature chart: shot constellation</div><div class="cx comp-art" aria-hidden="true">
+      <!-- a constellation of shots: each star a shot, size by xG, joined in sequence -->
+      <svg viewBox="0 0 340 220" fill="none">
+        <g stroke="rgba(127,243,255,.45)" stroke-width="1.2">
+          <path d="M40 160 L92 118 L150 136 L188 82 L246 104 L298 52"/>
+          <path d="M92 118 L120 60 L188 82"/><path d="M246 104 L270 168"/>
+        </g>
+        <g fill="#fff">
+          <circle cx="40" cy="160" r="3"/><circle cx="92" cy="118" r="5"/><circle cx="150" cy="136" r="3.5"/><circle cx="120" cy="60" r="3"/>
+          <circle cx="246" cy="104" r="4"/><circle cx="270" cy="168" r="2.5"/>
+        </g>
+        <circle cx="188" cy="82" r="9" fill="#7FF3FF" style="filter:drop-shadow(0 0 10px #7FF3FF)"/>
+        <circle cx="298" cy="52" r="8" fill="#FF6EC7" style="filter:drop-shadow(0 0 10px #FF6EC7)"/>
+        <g fill="rgba(255,255,255,.5)"><circle cx="24" cy="40" r="1"/><circle cx="70" cy="200" r="1"/><circle cx="210" cy="190" r="1.2"/><circle cx="320" cy="140" r="1"/><circle cx="160" cy="24" r="1"/><circle cx="318" cy="200" r="1"/></g>
+      </svg>
+    </div></div>
+    <div class="cc"><div class="cl mono">Next up: League phase, MD5</div><div class="cx">
+      <div class="fixture">
+        <span class="mono meta">Next European night</span>
+        <div class="teams">Club Brugge v Liverpool</div>
+        <span class="mono meta">Wed 25 Nov</span>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<section class="comp uel" id="uel" aria-labelledby="uel-title">
+  <div class="comp-head mono"><span>Europa League <span class="count">[01 a week]</span></span><span>Thursday nights</span></div>
+  <div class="comp-body"><span class="plus" style="left:33.333%;top:0"></span><span class="plus" style="left:66.666%;top:0"></span>
+    <div class="cc"><div class="cl mono">Format</div><div class="cx">
+      <h2 id="uel-title">Europa<br>League</h2>
+      <p>Thursday nights, the underdogs and the English clubs abroad. One match, one clear story from the data.</p>
+      <ul class="tags mono"><li class="tag-hot">1 match</li><li>Post-match report</li><li>Key player</li></ul>
+    </div></div>
+    <div class="cc"><div class="cl mono">Signature chart: pass network</div><div class="cx comp-art" aria-hidden="true">
+      <!-- faceted pass network: triangles in three orange tones -->
+      <svg viewBox="0 0 340 220">
+        <polygon points="30,180 110,60 150,170" fill="#FF6900"/>
+        <polygon points="110,60 210,40 150,170" fill="#C24E00"/>
+        <polygon points="150,170 210,40 250,190" fill="#FF9A4D"/>
+        <polygon points="210,40 310,90 250,190" fill="#FF6900" opacity=".75"/>
+        <polygon points="250,190 310,90 320,200" fill="#7A3100"/>
+        <g fill="#0E0E0E" stroke="#fff" stroke-width="2">
+          <circle cx="30" cy="180" r="7"/><circle cx="110" cy="60" r="7"/><circle cx="150" cy="170" r="7"/><circle cx="210" cy="40" r="7"/><circle cx="250" cy="190" r="7"/><circle cx="310" cy="90" r="7"/>
+        </g>
+      </svg>
+    </div></div>
+    <div class="cc"><div class="cl mono">Next up: League phase, MD5</div><div class="cx">
+      <div class="fixture">
+        <span class="mono meta">Next Thursday night</span>
+        <div class="teams">Celta v Bournemouth</div>
+        <span class="mono meta">Thu 26 Nov, 18:45 CET</span>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<section id="motw">
+  <div class="sec-head"><span class="mono count">Every match, three steps</span><h2>How it works</h2></div>
+  <div class="cycle">
+    <article>
+      <span class="mono when">01 / Before kick-off</span>
+      <h3>Preview</h3>
+      <p>Both teams read like an opposition report: form, xG for and against, where their shots come from, who decides games — and two or three predictions I can be held to.</p>
+    </article>
+    <article>
+      <span class="mono when">02 / After the final whistle</span>
+      <h3>Post-match report</h3>
+      <p>An xG timeline, both shot maps and three points: what worked, what didn't, and what should change.</p>
+    </article>
+    <article>
+      <span class="mono when">03 / The check</span>
+      <h3>Did the data get it right?</h3>
+      <p>Every prediction is graded in public. When I'm wrong, I explain why — that's where the learning is.</p>
+    </article>
+  </div>
+  <div class="status mono"><span class="dot" aria-hidden="true"></span>Match of the Week #01: Liverpool v Manchester United, Sunday 22 November.</div>
 </section>
 
 <section id="about">
-  <div class="wrap about">
+  <div class="about">
+    <div><span class="mono count">About</span></div>
     <div>
-      <h2>About</h2>
-      <p><strong>I'm Gerasimos Galanos</strong>, a Computer Science student at the University of Athens with a focus on databases and data analysis.</p>
-      <p>Pitch in Numbers is where I work like a football data analyst in public: building my own data pipeline, designing the database behind it, and turning numbers into insights a coach could actually use.</p>
-      <div class="stack">
-        <span class="tag">SQL</span><span class="tag">PostgreSQL</span><span class="tag">Python</span>
-        <span class="tag">pandas</span><span class="tag">mplsoccer</span><span class="tag">GitHub Actions</span><span class="tag">Metabase</span>
-      </div>
+      <p>I'm Gerasimos Galanos, a Computer Science student at the University of Athens. <span>I love football and databases, so this is where I work like a football data analyst — in public.</span></p>
+      <ul class="tools mono">
+        <li>SQL</li><li>PostgreSQL</li><li>Python</li><li>pandas</li><li>mplsoccer</li><li>Tableau</li><li>GitHub Actions</li>
+      </ul>
     </div>
-    <ul class="links">
-      <li><a href="https://github.com/pitchinnumbers">GitHub <span>/pitchinnumbers</span></a></li>
-      <li><a href="https://x.com/pitchinnumbers_">X <span>@pitchinnumbers_</span></a></li>
-      <li><a href="https://www.instagram.com/pitchinnumbers/">Instagram <span>@pitchinnumbers</span></a></li>
-      <li><a href="mailto:thepitchinnumbers@gmail.com">Email <span>thepitchinnumbers@gmail.com</span></a></li>
-    </ul>
   </div>
 </section>
 
-<section id="data" style="border-bottom:none">
-  <div class="wrap">
-    <h2>Data &amp; credits</h2>
-    <p class="sub" style="margin-bottom:0">Analysis is built on publicly available data from the Fantasy Premier League API, Understat and football-data.co.uk. All data belongs to its respective owners; this is an independent, non-commercial project with no affiliation to the Premier League or any club.</p>
+<section id="contact">
+  <div class="contact"><div><span class="mono count">Contact</span></div>
+  <div class="links-grid">
+    <a href="https://www.instagram.com/pitchinnumbers/"><span class="mono count">Instagram</span><span class="big">@pitchinnumbers</span><span class="mono go">Open ↗</span></a>
+    <a href="https://x.com/pitchinnumbers_"><span class="mono count">X</span><span class="big">@pitchinnumbers_</span><span class="mono go">Open ↗</span></a>
+    <a href="https://github.com/pitchinnumbers"><span class="mono count">GitHub</span><span class="big">/pitchinnumbers</span><span class="mono go">See the code ↗</span></a>
+    <a href="mailto:thepitchinnumbers@gmail.com"><span class="mono count">Email</span><span class="big">Get in touch</span><span class="mono go">thepitchinnumbers@gmail.com</span></a>
+  </div>
+</div>
+</section>
+
+<section id="data">
+  <div class="credits">
+    <div><span class="mono count">Data <span>[03]</span></span></div>
+    <div><p>Built on public data from the Fantasy Premier League API, Understat and football-data.co.uk. All data belongs to its owners. Pitch in Numbers is an independent, non-commercial project with no affiliation to the Premier League, UEFA or any club.</p></div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <span>© 2026 Pitch in Numbers · Gerasimos Galanos</span>
-    <span>Built with plain HTML · Hosted on GitHub Pages</span>
-  </div>
+<footer class="mono">
+  <span>© 2026 Gerasimos Galanos</span>
+  <span>Hosted on GitHub Pages</span>
 </footer>
 
 </body>
