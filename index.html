@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pitch in Numbers — Premier League through data</title>
-<meta name="description" content="Weekly Premier League data analysis by Gerasimos Galanos: a preview with predictions before kick-off, a post-match report after, and an honest check of what the data got right.">
+<meta name="description" content="Weekly Premier League data analysis by Gerasimos Galanos: a preview with predictions before kick-off, a post-match report after, and an honest verdict on what the data got right.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23012B1D'/%3E%3Cg transform='translate(14 13) scale(.105) skewX(-20)'%3E%3Cpath d='M 95 0 H 255 A 85 85 0 0 1 255 170 H 95 V 112 H 250 A 27 27 0 0 0 250 58 H 95 Z' fill='%23EEF3EF'/%3E%3Cpath d='M 95 112 H 175 V 300 H 95 Z' fill='%23EEF3EF'/%3E%3Crect x='-5' y='32' width='22' height='26' fill='%2301B36C'/%3E%3Crect x='25' y='16' width='22' height='42' fill='%2301B36C'/%3E%3Crect x='55' y='0' width='22' height='58' fill='%2301B36C'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -139,6 +139,16 @@
   a.fixture.done{display:block;text-decoration:none;border-color:rgba(254,177,146,.6)}
   a.fixture.done:hover{background:rgba(0,0,0,.25)}
   a.fixture.done .meta:last-child{color:#FEB192;opacity:1}
+
+  .upnext{border:1px solid #00FF85;background:linear-gradient(135deg,rgba(0,255,133,.14),rgba(0,0,0,.2));padding:18px;max-width:460px}
+  .un-tag{display:inline-block;background:#00FF85;color:#37003C;padding:3px 8px;font-weight:500}
+  .un-title{font-size:26px;font-weight:600;letter-spacing:-.02em;margin-top:12px;line-height:1.1}
+  .un-sub{opacity:.75;margin-top:2px}
+  .un-steps{list-style:none;margin-top:14px;display:grid;gap:6px;font-size:11px}
+  .un-steps li{display:flex;gap:10px;opacity:.85}
+  .un-steps b{font-weight:500;color:#00FF85;min-width:9.5em}
+  .arch-l{display:block;margin:22px 0 8px;opacity:.6}
+  .arch-in{color:#00FF85;font-size:11px}
   /* Premier League: royal purple, electric green, magenta, diagonal energy */
   .pl{background:radial-gradient(ellipse 60% 55% at 50% 50%, rgba(233,0,82,.20), transparent 70%), linear-gradient(180deg,#012B1D 0,#2A0035 90px,#37003C 200px,#37003C calc(100% - 200px),#1E0F4E 100%)}
   .pl::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg, rgba(0,255,133,.07) 0 2px, transparent 2px 26px);-webkit-mask-image:linear-gradient(180deg,transparent,#000 160px,#000 calc(100% - 160px),transparent);mask-image:linear-gradient(180deg,transparent,#000 160px,#000 calc(100% - 160px),transparent)}
@@ -289,6 +299,13 @@
   .st-note{opacity:.5;font-size:10px;margin-top:10px}
   .comp-art svg{max-width:none}
 
+
+  .cycle.steps article{position:relative;padding:36px 28px 48px;overflow:hidden}
+  .cycle.steps .num{display:block;font-size:clamp(72px,8vw,120px);font-weight:600;line-height:.85;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px var(--peach);margin-bottom:22px}
+  .cycle.steps .when{color:var(--peach)}
+  .cycle.steps h3{font-size:clamp(24px,2.2vw,30px);margin:8px 0 12px;line-height:1.1}
+  .cycle.steps .verdict{background:linear-gradient(160deg,rgba(254,177,146,.12),transparent 60%)}
+  .cycle.steps .verdict .num{color:var(--peach);-webkit-text-stroke:0}
   /* prediction tracker */
   .pred{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
   .pred > div{min-width:0}
@@ -406,7 +423,7 @@
         </svg>
         <span>Latest · Match of the Week #01<strong>Liverpool 4-0 Man United</strong></span>
       </a>
-      <p class="mono pitchline">A preview with predictions before kick-off, a report after the final whistle, and an honest check of what the data got right.</p>
+      <p class="mono pitchline">A preview with predictions before kick-off, a report after the final whistle, and an honest verdict on what the data got right.</p>
       <a class="cta mono" href="https://www.instagram.com/pitchinnumbers/">Follow the project <span aria-hidden="true">→</span></a>
     </div>
 
@@ -423,7 +440,7 @@
   <div class="comp-body"><span class="plus" style="left:33.333%;top:0"></span><span class="plus" style="left:66.666%;top:0"></span>
     <div class="cc"><div class="cl mono">Format</div><div class="cx">
       <h2 id="pl-title">Premier<br><em>League</em></h2>
-      <p>The two biggest matches of every matchweek, with the full cycle: preview with predictions, post-match report, and the check.</p>
+      <p>The two biggest matches of every matchweek, with the full cycle: preview with predictions, post-match report, and the verdict.</p>
       <ul class="tags mono"><li class="tag-hot">2 matches</li><li>xG timeline</li><li>Shot maps</li><li>Predictions</li></ul>
     </div></div>
     <div class="cc"><div class="cl mono">Latest match report</div><div class="cx comp-art">
@@ -441,22 +458,28 @@
         <div class="mc-foot mono"><span>← United attack</span><span>Liverpool attack →</span></div>
       </a>
     </div></div>
-    <div class="cc"><div class="cl mono">Latest: Matchweek 11</div><div class="cx">
+    <div class="cc"><div class="cl mono">Up next &amp; latest</div><div class="cx">
+      <div class="upnext">
+        <span class="mono un-tag">Up next</span>
+        <div class="un-title">Match of the Week #02</div>
+        <div class="un-sub">Matchweek 12</div>
+        <ol class="un-steps mono">
+          <li><b>Fri</b> Match announced</li>
+          <li><b>Before kick-off</b> Preview &amp; predictions</li>
+          <li><b>After the match</b> Report &amp; the verdict</li>
+        </ol>
+      </div>
+      <span class="mono arch-l">Latest analysis</span>
       <a class="fixture done" href="#motw01" data-open="motw01">
-        <span class="mono meta">Match of the Week #01 · Published</span>
+        <span class="mono meta">Match of the Week #01 · Matchweek 11</span>
         <div class="match"><div class="side"><span class="tn">Liverpool 4-0 Man United</span></div></div>
         <span class="mono meta">The real story is the last 30 minutes. Read →</span>
       </a>
-      <div class="fixture soon">
-        <span class="mono meta">Match of the Week #02</span>
-        <div class="teams">Matchweek 12</div>
-        <span class="mono meta">Picked this week</span>
-      </div>
     </div></div>
   </div>
 
   <details class="lp mw" id="motw01">
-    <summary><span>Match of the Week #01: Liverpool 4-0 Man United</span><span class="mono lp-meta">Read the analysis <span class="lp-arrow" aria-hidden="true">+</span></span></summary>
+    <summary><span><span class="mono arch-in">Latest analysis · #01</span><br>Liverpool 4-0 Man United</span><span class="mono lp-meta">Read the analysis <span class="lp-arrow" aria-hidden="true">+</span></span></summary>
     <div class="mw-body">
       <div class="mw-lede">
         <h3>Everyone will say it was the red card. The real story is the last 30 minutes.</h3>
@@ -587,21 +610,24 @@
 
 <section id="motw" style="border-top:0">
   <div class="sec-head"><span class="mono count">Every match, three steps</span><h2>How it works</h2></div>
-  <div class="cycle">
+  <div class="cycle steps">
     <article>
-      <span class="mono when">01 / Before kick-off</span>
-      <h3>Preview</h3>
-      <p>Both teams read like an opposition report: form, xG for and against, where their shots come from, who decides games — and two or three predictions I can be held to.</p>
+      <span class="num" aria-hidden="true">01</span>
+      <span class="mono when">Before kick-off</span>
+      <h3>Preview &amp; predictions</h3>
+      <p>Both teams read like an opposition report: form, xG for and against, where their shots come from, who decides games. Then two or three predictions I can be held to.</p>
     </article>
     <article>
-      <span class="mono when">02 / After the final whistle</span>
-      <h3>Post-match report</h3>
-      <p>An xG timeline, both shot maps and three points: what worked, what didn't, and what should change.</p>
+      <span class="num" aria-hidden="true">02</span>
+      <span class="mono when">After the match</span>
+      <h3>Data-driven match report</h3>
+      <p>The context first, then the one thing only the data shows: xG race, shot maps, the turning point and the player who decided it.</p>
     </article>
-    <article>
-      <span class="mono when">03 / The check</span>
-      <h3>Did the data get it right?</h3>
-      <p>Every prediction is graded in public. When I'm wrong, I explain why — that's where the learning is.</p>
+    <article class="verdict">
+      <span class="num" aria-hidden="true">03</span>
+      <span class="mono when">No excuses</span>
+      <h3>The Verdict</h3>
+      <p>Every prediction is graded in public and added to the tracker. When I'm wrong, I explain why. That's where the learning is.</p>
     </article>
   </div>
   <div class="status mono"><span class="dot" aria-hidden="true"></span>Match of the Week #01 is out: <a href="#motw01" data-open="motw01" style="color:var(--peach)">Liverpool 4-0 Man United →</a></div>
