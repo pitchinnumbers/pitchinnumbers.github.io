@@ -444,6 +444,12 @@
   .lp.pl-t .z0 td:first-child{color:#E3EDE7}
   .lp.pl-t tr:nth-child(4) td,.lp.pl-t tr:nth-child(17) td{border-bottom:1px dashed rgba(255,255,255,.45)}
   .pl .tag-link{color:#00FF85}
+
+  /* Competition logos */
+  .comp-logo{display:block;width:auto;height:72px;max-width:170px;object-fit:contain;object-position:left center;margin:0 0 22px}
+  .comp-logo-pl{height:52px}
+  .comp-logo-uel{height:84px}
+  @media (max-width:600px){.comp-logo{height:56px}.comp-logo-pl{height:42px}.comp-logo-uel{height:66px}}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -519,6 +525,7 @@
   <div class="comp-head mono"><span>Premier League <span class="count">[02 a week]</span></span><span>Weekends</span></div>
   <div class="comp-body"><span class="plus" style="left:33.333%;top:0"></span><span class="plus" style="left:66.666%;top:0"></span>
     <div class="cc"><div class="cl mono">Format</div><div class="cx">
+      <img class="comp-logo comp-logo-pl" src="crests/comp-premier-league.png" alt="" width="250" height="106" decoding="async">
       <h2 id="pl-title">Premier<br><em>League</em></h2>
       <p>The two biggest matches of every matchweek, with a preview before kick-off and a data-driven report after it.</p>
       <ul class="tags mono"><li class="tag-hot">2 matches</li><li>xG timeline</li><li>Shot maps</li><li>Match context</li><li><a href="#pl-table" class="tag-link" data-open="pl-table">League table ↓</a></li></ul>
@@ -629,6 +636,7 @@
   <div class="comp-head mono"><span>Champions League <span class="count">[01 a week]</span></span><span>Tuesday / Wednesday nights</span></div>
   <div class="comp-body"><span class="plus" style="left:33.333%;top:0"></span><span class="plus" style="left:66.666%;top:0"></span>
     <div class="cc"><div class="cl mono">Format</div><div class="cx">
+      <img class="comp-logo comp-logo-ucl" src="crests/comp-champions-league.png" alt="" width="250" height="238" decoding="async">
       <h2 id="ucl-title">Champions<br>League</h2>
       <p>One European night a week: how a team's numbers at home hold up against the best in Europe.</p>
       <ul class="tags mono"><li class="tag-hot">1 match</li><li>Post-match report</li><li><a href="#ucl-table" class="tag-link" data-open="ucl-table">League phase table ↓</a></li></ul>
@@ -667,6 +675,7 @@
   <div class="comp-head mono"><span>Europa League <span class="count">[01 a week]</span></span><span>Thursday nights</span></div>
   <div class="comp-body"><span class="plus" style="left:33.333%;top:0"></span><span class="plus" style="left:66.666%;top:0"></span>
     <div class="cc"><div class="cl mono">Format</div><div class="cx">
+      <img class="comp-logo comp-logo-uel" src="crests/comp-europa-league.png" alt="" width="250" height="357" decoding="async">
       <h2 id="uel-title">Europa<br>League</h2>
       <p>Thursday nights, the underdogs and the English clubs abroad. One match, one clear story from the data.</p>
       <ul class="tags mono"><li class="tag-hot">1 match</li><li>Post-match report</li><li><a href="#uel-table" class="tag-link" data-open="uel-table">League phase table ↓</a></li></ul>
