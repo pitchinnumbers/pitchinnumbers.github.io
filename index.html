@@ -417,6 +417,11 @@
   @media (prefers-reduced-motion:reduce){
     nav .links a:hover,.tag-link:hover,.status a:hover,.mw-take a:hover{text-decoration:underline;text-underline-offset:3px}
   }
+  /* Club crests (crests/ folder). Generic initials shield when a file is missing. */
+  img.crest{clip-path:none;background:var(--ivory);border-radius:6px;padding:2px;width:24px;height:24px;object-fit:contain;display:inline-block}
+  .mc-head img.crest{width:24px;height:24px}
+  .crest{display:inline-grid;place-items:center;width:20px;height:23px;margin-right:8px;vertical-align:middle;position:relative;top:-1px;flex:none;clip-path:polygon(0 0,100% 0,100% 60%,50% 100%,0 60%);background:hsl(var(--h) 42% 34%);color:#fff;font:600 7px/1 var(--mono);letter-spacing:0;text-transform:uppercase}
+  .mc-head .crest{width:18px;height:21px}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -899,6 +904,32 @@
     $$('.hw').forEach(s => s.style.cssText = 'opacity:1;transform:none;animation:none');
     console.warn('Animations disabled:', err);
   }
+})();
+</script>
+<script id="crests">
+/* Club crests from crests/; falls back to an initials shield. */
+  const FILES = {"AC Milan": "crests/ac-milan.png", "AEK Athens": "crests/aek-athens.png", "AZ Alkmaar": "crests/az-alkmaar.png", "Anderlecht": "crests/anderlecht.png", "Ararat-Armenia": "crests/ararat-armenia.png", "Arsenal": "crests/arsenal.png", "Aston Villa": "crests/aston-villa.png", "Atlético Madrid": "crests/atltico-madrid.png", "Barcelona": "crests/barcelona.png", "Bayer Leverkusen": "crests/bayer-leverkusen.png", "Bayern Munich": "crests/bayern-munich.png", "Benfica": "crests/benfica.png", "Beşiktaş": "crests/beikta.png", "Bodø/Glimt": "crests/bod-glimt.png", "Borussia Dortmund": "crests/borussia-dortmund.png", "Bournemouth": "crests/bournemouth.png", "Celje": "crests/celje.png", "Celta Vigo": "crests/celta-vigo.png", "Celtic": "crests/celtic.png", "Club Brugge": "crests/club-brugge.png", "Como": "crests/como.png", "Crystal Palace": "crests/crystal-palace.png", "Dinamo Zagreb": "crests/dinamo-zagreb.png", "Fenerbahçe": "crests/fenerbahe.png", "Ferencváros": "crests/ferencvros.png", "Feyenoord": "crests/feyenoord.png", "Galatasaray": "crests/galatasaray.png", "Hapoel Be'er Sheva": "crests/hapoel-be-er-sheva.png", "Hoffenheim": "crests/hoffenheim.png", "Inter": "crests/inter.png", "Jagiellonia": "crests/jagiellonia.png", "Juventus": "crests/juventus.png", "LASK": "crests/lask.png", "Lech Poznań": "crests/lech-pozna.png", "Lens": "crests/lens.png", "Levski Sofia": "crests/levski-sofia.png", "Lille": "crests/lille.png", "Lillestrøm": "crests/lillestrm.png", "Liverpool": "crests/liverpool.png", "Lyon": "crests/lyon.png", "Man United": "crests/man-united.png", "Manchester United": "crests/manchester-united.png", "Manchester City": "crests/manchester-city.png", "Marseille": "crests/marseille.png", "NEC": "crests/nec.png", "Napoli": "crests/napoli.png", "OFI Crete": "crests/ofi-crete.png", "Olympiacos": "crests/olympiacos.png", "Omonia": "crests/omonia.png", "PSV Eindhoven": "crests/psv-eindhoven.png", "Paris Saint-Germain": "crests/paris-saint-germain.png", "Porto": "crests/porto.png", "RB Leipzig": "crests/rb-leipzig.png", "Real Betis": "crests/real-betis.png", "Real Madrid": "crests/real-madrid.png", "Real Sociedad": "crests/real-sociedad.png", "Red Bull Salzburg": "crests/red-bull-salzburg.png", "Rennes": "crests/rennes.png", "Roma": "crests/roma.png", "Sabah": "crests/sabah.png", "Shakhtar Donetsk": "crests/shakhtar-donetsk.png", "Slavia Prague": "crests/slavia-prague.png", "Slovan Bratislava": "crests/slovan-bratislava.png", "Sparta Prague": "crests/sparta-prague.png", "Sporting CP": "crests/sporting-cp.png", "Sturm Graz": "crests/sturm-graz.png", "Stuttgart": "crests/stuttgart.png", "Sunderland": "crests/sunderland.png", "Torreense": "crests/torreense.png", "Viking": "crests/viking.png", "Viktoria Plzeň": "crests/viktoria-plze.png", "Villarreal": "crests/villarreal.png"};
+(() => {
+  const mk = name => {
+    if (FILES[name]) { const i = document.createElement('img'); i.className = 'crest'; i.alt = ''; i.src = FILES[name]; i.width = 24; i.height = 24; i.decoding = 'async'; return i; }
+    const w = name.replace(/[^\p{L}\s-]/gu, '').split(/[\s-]+/).filter(Boolean);
+    const ab = (w.length > 1 ? w.map(x => x[0]).join('').slice(0, 3) : name.slice(0, 3));
+    let h = 0; for (const c of name) h = (h * 31 + c.charCodeAt(0)) % 360;
+    const s = document.createElement('span');
+    s.className = 'crest'; s.setAttribute('aria-hidden', 'true'); s.style.setProperty('--h', h); s.textContent = ab;
+    return s;
+  };
+  const targets = [
+    ...document.querySelectorAll('.lp tbody td:nth-child(2)'),
+    ...document.querySelectorAll('.stakes li:not(.gap) span:nth-child(2)'),
+    ...document.querySelectorAll('.tn'),
+    ...document.querySelectorAll('.mc-head > span')
+  ];
+  targets.forEach(el => {
+    const t = el.textContent.trim();
+    if (!t || /\d/.test(t)) return;
+    el.insertBefore(mk(t), el.firstChild);
+  });
 })();
 </script>
 </body>
