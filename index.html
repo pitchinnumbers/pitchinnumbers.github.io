@@ -11,105 +11,83 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Zilla+Slab:ital,wght@1,700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --forest:#012B1D;      /* base */
-    --forest-deep:#011F15; /* hero floor, panels */
-    --jungle:#01B36C;      /* data, links, logo */
-    --peach:#FEB192;       /* goals, call to action */
-    --ivory:#EEF3EF;       /* type */
-    --sage:#8DB5A2;
-    --bright:#3EEA9C;        /* secondary type */
-    --grid:rgba(238,243,239,.14);
-    --sans:'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
-    --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+    --forest:#012B1D;--forest-deep:#011F15;--jungle:#01B36C;--bright:#3EEA9C;--peach:#FEB192;
+    --ivory:#EEF3EF;--sage:#8DB5A2;--surface:#04382A;--grid:rgba(238,243,239,.14);
+    --sans:'Inter Tight','Helvetica Neue',Arial,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+    --wrap:1200px;--pad:24px;--r:20px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--forest);color:var(--ivory);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{background:var(--forest);color:var(--ivory);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
   a{color:inherit;text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--peach);outline-offset:3px}
+  p{text-wrap:pretty}
+  h1,h2,h3,h4{text-wrap:balance}
   .mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;line-height:1.7}
   .count{color:var(--sage)}
+  .plus{display:none}
 
-  /* ---------- hero ---------- */
-  .hero{position:relative;min-height:min(100vh,1000px);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;
-        background:radial-gradient(ellipse 55% 60% at 50% 52%, rgba(1,179,108,.38), rgba(1,179,108,0) 70%), var(--forest)}
-  nav{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--grid)}
-  nav .brand{display:flex;align-items:center;gap:10px;padding:18px 28px;border-right:1px solid var(--grid)}
+  /* ---------- top bar ---------- */
+  header.site{position:sticky;top:0;z-index:40;background:var(--forest);border-bottom:1px solid var(--grid)}
+  nav{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px}
+  nav .brand{display:flex;align-items:center;gap:10px;flex:none}
   nav .brand svg{width:30px;height:22px}
   nav .brand span{font-weight:600;font-size:15px;letter-spacing:-.01em}
-  nav .links{grid-column:2 / 4;display:flex;justify-content:space-between;align-items:center;padding:0 28px}
-  nav .links a{padding:18px 0}
+  nav .links{display:flex;align-items:center;gap:28px}
+  nav .links a{padding:8px 0;white-space:nowrap}
   nav .links a:hover{color:var(--peach)}
 
-  .stage{display:grid;grid-template-columns:1fr 1fr 1fr;position:relative}
-  .col{padding:28px;display:flex;flex-direction:column}
-  .col + .col{border-left:1px solid var(--grid)}
-  .left{justify-content:space-between;padding-bottom:5vw}
-  .mission{max-width:30ch;margin-top:22vh}
-  .stat{display:flex;align-items:center;gap:18px;border-top:1px solid var(--grid);padding-top:22px}
-  .stat b{font-family:var(--sans);font-weight:400;font-size:64px;line-height:1;color:var(--peach);letter-spacing:-.03em}
+  /* ---------- hero ---------- */
+  .hero{max-width:var(--wrap);margin:0 auto;padding:72px var(--pad) 72px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px 48px;align-items:stretch}
+  .hero .wordmark{grid-column:1/-1;font-size:clamp(44px,10.5vw,150px);font-weight:600;line-height:.9;letter-spacing:-.04em;white-space:nowrap;margin-left:-.03em}
+  .hero-copy{display:flex;flex-direction:column;gap:24px}
+  .hero .mission{font-family:var(--sans);text-transform:none;letter-spacing:-.025em;font-size:clamp(26px,3vw,40px);line-height:1.3;font-weight:500;max-width:22ch;margin:0}
+  .hero .pitchline{font-family:var(--sans);text-transform:none;letter-spacing:0;font-size:17px;line-height:1.55;color:var(--sage);max-width:46ch;margin:0}
+  .hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:20px 36px;margin-top:auto}
+  .hero .cta{margin:0;width:auto;max-width:none;border-radius:999px;padding:15px 24px;gap:28px}
+  .hero .stat{border:0;padding:0;gap:16px}
+  .hero .stat b{font-size:56px;letter-spacing:-.04em}
+  .hero .stat i{padding-left:16px}
+  .hero-art{display:flex;flex-direction:column;gap:16px;padding:20px;border:1px solid var(--grid);border-radius:28px;background:radial-gradient(ellipse 70% 55% at 50% 38%,rgba(1,179,108,.28),transparent 70%),var(--forest-deep)}
+  .hero-art > svg{width:min(100%,360px);height:auto;margin:8px auto 0;display:block}
+  .hero .next{margin:0;max-width:none;border-radius:16px;background:rgba(1,43,29,.8)}
+
+
+  .next{display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:center;border:1px solid var(--grid);padding:12px}
+  .next svg{width:130px;height:84px;display:block;background:var(--forest-deep);border-radius:10px}
+  .next strong{display:block;font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:-.01em;text-transform:none;margin-top:4px;color:var(--ivory)}
+  .cta{display:inline-flex;justify-content:space-between;align-items:center;gap:40px;background:var(--peach);color:var(--forest);padding:13px 16px;font-weight:500}
+  .cta:hover{background:#ffc3aa}
+  .stat{display:flex;align-items:center;gap:18px}
+  .stat b{font-weight:400;font-size:64px;line-height:1;color:var(--peach);letter-spacing:-.03em}
   .stat i{font-style:normal;border-left:1px solid var(--grid);padding-left:18px}
 
-  .center{align-items:center;justify-content:center;padding:0}
-  .center svg{width:min(92%,420px);height:auto;filter:drop-shadow(0 0 18px rgba(254,177,146,.45))}
-
-  .right{justify-content:center;gap:28px}
-  .next{display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:center;border:1px solid var(--grid);padding:12px;background:rgba(1,31,21,.55);max-width:360px;margin-left:auto}
-  .next svg{width:130px;height:84px;display:block;background:var(--forest-deep)}
-  .next strong{display:block;font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:-.01em;text-transform:none;margin-top:4px;color:var(--ivory)}
-  .pitchline{max-width:36ch;margin-left:auto;text-align:left}
-  .cta{display:inline-flex;justify-content:space-between;align-items:center;gap:40px;background:var(--peach);color:var(--forest);padding:13px 16px;max-width:360px;width:100%;margin-left:auto;font-weight:500}
-  .cta:hover{background:#ffc3aa}
-
-  .plus{position:absolute;width:13px;height:13px;transform:translate(-50%,-50%);pointer-events:none}
-  .plus::before,.plus::after{content:"";position:absolute;background:var(--ivory);opacity:.7}
-  .plus::before{left:6px;top:0;width:1px;height:13px}
-  .plus::after{top:6px;left:0;height:1px;width:13px}
-
-  .wordmark{font-family:var(--sans);font-weight:600;font-size:12.4vw;line-height:.8;letter-spacing:-.06em;white-space:nowrap;
-            text-align:center;padding:0 1vw 1.6vw;margin-top:-3.2vw;position:relative;z-index:2;color:var(--ivory)}
-
-  /* ---------- sections ---------- */
-  section{border-top:1px solid var(--grid)}
-  .sec-head{display:grid;grid-template-columns:1fr 2fr;border-bottom:1px solid var(--grid)}
-  .sec-head > *{padding:22px 28px}
-  .sec-head h2{font-weight:500;font-size:clamp(28px,3.2vw,44px);letter-spacing:-.03em;line-height:1.05;border-left:1px solid var(--grid)}
-  .cycle{display:grid;grid-template-columns:repeat(3,1fr)}
-  .cycle article{padding:28px 28px 40px}
-  .cycle article + article{border-left:1px solid var(--grid)}
+  /* ---------- plain sections ---------- */
+  main > section:not(.comp){max-width:var(--wrap);margin:96px auto 0;padding:0 var(--pad)}
+  main > section.hero{margin-top:0}
+  .sec-head{display:grid;gap:10px;margin-bottom:28px}
+  .sec-head h2{font-weight:500;font-size:clamp(36px,5vw,68px);letter-spacing:-.04em;line-height:1}
+  .cycle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .cycle article{background:var(--surface);border:1px solid var(--grid);border-radius:var(--r);padding:28px}
   .cycle .when{color:var(--peach)}
-  .cycle h3{font-weight:500;font-size:24px;letter-spacing:-.02em;margin:40px 0 10px}
+  .cycle h3{font-weight:500;font-size:24px;letter-spacing:-.02em}
   .cycle p{color:var(--sage);max-width:34ch}
-  .status{border-top:1px solid var(--grid);padding:18px 28px;display:flex;gap:12px;align-items:center}
-  .status .dot{width:8px;height:8px;border-radius:50%;background:var(--peach);box-shadow:0 0 0 5px rgba(254,177,146,.18)}
-
-  .about{display:grid;grid-template-columns:1fr 2fr}
-  .about > div{padding:28px 28px 48px}
-  .about > div + div{border-left:1px solid var(--grid)}
-  .about p{font-size:clamp(20px,2vw,26px);line-height:1.4;letter-spacing:-.015em;max-width:30ch;margin-bottom:22px}
+  .status{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;padding:16px 20px;border:1px solid var(--grid);border-radius:999px;width:fit-content;max-width:100%}
+  .status .dot{width:8px;height:8px;border-radius:50%;background:var(--peach);box-shadow:0 0 0 5px rgba(254,177,146,.18);flex:none}
+  .about,.contact,.credits{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:24px 48px;border-top:1px solid var(--grid);padding-top:32px}
+  .about p{font-size:clamp(22px,2.6vw,34px);line-height:1.3;letter-spacing:-.02em;max-width:30ch;margin-bottom:28px;text-wrap:balance}
   .about p span{color:var(--sage)}
   .tools{display:flex;flex-wrap:wrap;gap:8px}
-  .tools li{list-style:none;border:1px solid var(--grid);padding:6px 10px}
-
-  .contact{display:grid;grid-template-columns:1fr 2fr}
-  .contact > div:first-child{padding:28px}
-  .links-grid{display:grid;grid-template-columns:1fr 1fr;border-left:1px solid var(--grid)}
-  .links-grid a{padding:28px;display:flex;flex-direction:column;gap:30px;min-height:150px}
-  .links-grid a:nth-child(even){border-left:1px solid var(--grid)}
-  .links-grid a:nth-child(n+3){border-top:1px solid var(--grid)}
-  .links-grid a:hover{background:var(--forest-deep)}
-  .links-grid a:hover .go{color:var(--peach)}
+  .tools li{list-style:none;border:1px solid var(--grid);border-radius:999px;padding:6px 14px}
+  .links-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .links-grid a{display:flex;flex-direction:column;gap:28px;min-height:160px;padding:24px;background:var(--surface);border:1px solid var(--grid);border-radius:var(--r)}
   .links-grid .big{font-size:24px;font-weight:500;letter-spacing:-.02em}
-  .go{margin-top:auto;color:var(--sage)}
-
-  .credits{display:grid;grid-template-columns:1fr 2fr}
-  .credits > div{padding:28px 28px 56px}
-  .credits > div + div{border-left:1px solid var(--grid);color:var(--sage);max-width:none}
-  .credits p{max-width:62ch}
-  footer{border-top:1px solid var(--grid);display:flex;justify-content:space-between;padding:20px 28px;color:var(--sage);flex-wrap:wrap;gap:12px}
-
-
-  /* ---------- competitions ---------- */
+  .links-grid .go{margin-top:auto;color:var(--sage)}
+  .links-grid a:hover .go{color:var(--peach)}
+  .credits p{color:var(--sage);max-width:62ch}
+  footer{max-width:var(--wrap);margin:80px auto 0;padding:24px var(--pad) 40px;border-top:1px solid var(--grid);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--sage)}
+/* ---------- competitions ---------- */
   .comp{position:relative;overflow:hidden;border-top:0}
   .comp-head{display:flex;justify-content:space-between;gap:16px;padding:28px 28px 16px;border-bottom:1px solid rgba(255,255,255,.14);position:relative;z-index:1}
   .comp-body{display:grid;grid-template-columns:repeat(3,1fr);position:relative;z-index:1}
@@ -152,12 +130,11 @@
   .arch-in{color:#00FF85;font-size:11px}
   /* Premier League: royal purple, electric green, magenta, diagonal energy */
   .pl{background:radial-gradient(ellipse 60% 55% at 50% 50%, rgba(233,0,82,.20), transparent 70%), linear-gradient(180deg,#012B1D 0,#2A0035 90px,#37003C 200px,#37003C calc(100% - 200px),#1E0F4E 100%)}
-  .pl::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg, rgba(0,255,133,.07) 0 2px, transparent 2px 26px);-webkit-mask-image:linear-gradient(180deg,transparent,#000 160px,#000 calc(100% - 160px),transparent);mask-image:linear-gradient(180deg,transparent,#000 160px,#000 calc(100% - 160px),transparent)}
   .pl h2{font-weight:600;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.05em}
   .pl h2 em{font-style:normal;color:#00FF85}
   .pl .accent,.pl .fixture .teams{color:#fff}
   .pl .tag-hot{background:#00FF85;color:#37003C;border-color:#00FF85}
-  .pl .fixture{border-left:4px solid #E90052;background:rgba(0,0,0,.18)}
+  .pl .fixture{border-color:rgba(233,0,82,.7);background:rgba(0,0,0,.18)}
 
 
   /* Champions League: night-sky blue, light, cyan + magenta accents, constellation */
@@ -172,7 +149,7 @@
   .uel{background:radial-gradient(ellipse 50% 55% at 50% 52%, rgba(255,105,0,.26), transparent 70%), linear-gradient(180deg,#0A1328 0,#121212 180px,#121212 calc(100% - 180px),#012B1D 100%)}
 
   .uel h2{font-family:'Zilla Slab',Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(40px,4.6vw,72px);letter-spacing:-.02em;text-transform:uppercase;color:#FF6900}
-  .uel .fixture{border-color:rgba(255,105,0,.5);border-top:4px solid #FF6900}
+  .uel .fixture{border-color:rgba(255,105,0,.5)}
   .uel .tag-hot{background:#FF6900;color:#0E0E0E;border-color:#FF6900}
   .uel .comp-head{border-bottom-color:rgba(255,105,0,.35)}
 
@@ -327,36 +304,36 @@
   .pscroll{overflow-x:auto}
   .pempty{color:var(--sage);font-style:italic;padding:18px 10px;border-bottom:1px solid var(--grid);max-width:none!important}
 
-  @media (max-width:900px){
-    .comp-body{grid-template-columns:1fr}
-    .cc + .cc{border-left:0;border-top:1px solid rgba(255,255,255,.14)}
-    .comp-art svg{max-width:280px}
-    .cx{padding:28px 28px 36px}
-    .comp .cc:last-child .cx{padding-bottom:72px}
-    nav{grid-template-columns:1fr}
-    nav .brand{border-right:0}
-    nav .links{grid-column:auto;border-top:1px solid var(--grid);overflow-x:auto;gap:22px}
-    .stage{grid-template-columns:1fr}
-    .col + .col{border-left:0;border-top:1px solid var(--grid)}
-    .mission{margin-top:4vh}
-    .center{padding:28px 0}
-    .stat{margin-top:28px}
-    .next,.cta,.pitchline{margin-left:0}
-    .plus{display:none}
-    .wordmark{font-size:11.6vw;margin-top:0;padding-top:24px}
-    .sec-head,.about,.credits,.contact,.pred{grid-template-columns:minmax(0,1fr)}
-    .pk b{font-size:30px}
-    .pk div{padding:12px}
-    .pred > div + div{border-left:0;border-top:1px solid var(--grid)}
-    .links-grid{border-left:0;border-top:1px solid var(--grid)}
-    .links-grid a:nth-child(even){border-left:0}
-    .links-grid a + a{border-top:1px solid var(--grid)}
-    .sec-head h2,.about > div + div,.credits > div + div{border-left:0;border-top:1px solid var(--grid)}
-    .cycle,.links-grid{grid-template-columns:1fr}
-    .cycle article + article,.links-grid a + a{border-left:0;border-top:1px solid var(--grid)}
-  }
+
+  /* ---------- competition panels ---------- */
+  .comp{width:min(var(--wrap),calc(100% - 2*var(--pad)));margin:24px auto 0;border-radius:32px;border:1px solid rgba(255,255,255,.16)}
+  .comp + .comp{margin-top:24px}
+  .pl{background:#37003C;border-color:rgba(0,255,133,.28)}
+  .ucl{background:#0D2270;border-color:rgba(127,243,255,.3)}
+  .uel{background:#121212;border-color:rgba(255,105,0,.4)}
+  .comp-head{padding:22px 32px;border-bottom:0}
+  .comp-body{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:8px 40px;padding:8px 32px 32px;align-items:start}
+  .comp-body > .cc:nth-of-type(1){grid-row:1 / span 2}
+  .comp-body > .cc:nth-of-type(2){grid-column:2}
+  .comp-body > .cc:nth-of-type(3){grid-column:2}
+  .cc + .cc{border-left:0}
+  .cl{padding:0 0 12px;border-bottom:0;opacity:.9}
+  .cx{padding:0}
+  .comp h2{font-size:clamp(44px,5.6vw,88px);letter-spacing:-.04em;line-height:.92;margin-bottom:24px}
+  .comp p{max-width:36ch;opacity:.9}
+  .mcard,.stakes,.upnext,.fixture{border-radius:var(--r)}
+  .fixture,.upnext{max-width:none}
+  .tags li{border-radius:999px;padding:5px 12px}
+  .un-tag{border-radius:999px;padding:3px 10px}
+  .lp{margin:0 32px 32px;border-radius:var(--r);overflow:hidden}
+  .lp summary{padding:22px 24px}
+  .lp-body{padding:0 24px 24px}
+  .mw-text,.mw-fig,.mw-lede,.mw-take{padding-left:24px;padding-right:24px}
+  .comp p.lp-note{max-width:70ch}
+  .stakes{padding:20px}
+  .mcard{padding:20px}
   @media (prefers-reduced-motion:no-preference){
-    .center svg .shot{opacity:0;animation:land .5s ease-out forwards}
+    .hero-art svg .shot{opacity:0;animation:land .5s ease-out forwards}
     @keyframes land{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
   }
 
@@ -417,18 +394,62 @@
   @media (prefers-reduced-motion:reduce){
     nav .links a:hover,.tag-link:hover,.status a:hover,.mw-take a:hover{text-decoration:underline;text-underline-offset:3px}
   }
-  /* Club crests (crests/ folder). Generic initials shield when a file is missing. */
+
+  /* ---------- responsive ---------- */
+  @media (max-width:960px){
+    .hero{grid-template-columns:minmax(0,1fr);gap:32px;padding-top:36px}
+    .comp-body{grid-template-columns:minmax(0,1fr);gap:28px}
+    .comp-body > .cc:nth-of-type(n){grid-column:auto;grid-row:auto}
+    .cycle,.about,.contact,.credits{grid-template-columns:minmax(0,1fr)}
+    main > section:not(.comp){margin-top:72px}
+  }
+  @media (max-width:640px){
+    :root{--pad:16px}
+    nav{min-height:56px}
+    nav .links{overflow-x:auto;gap:20px;scrollbar-width:none;margin-right:calc(-1*var(--pad));padding-right:var(--pad)}
+    nav .links::-webkit-scrollbar{display:none}
+    nav .brand span{display:none}
+    .hero .cta{width:100%;justify-content:space-between}
+    .comp{border-radius:24px}
+    .comp-head{padding:18px 20px;flex-wrap:wrap}
+    .comp-body{padding:4px 20px 24px}
+    .lp{margin:0 12px 12px}
+    .lp summary{padding:16px}
+    .links-grid{grid-template-columns:minmax(0,1fr)}
+    .status{border-radius:20px}
+  }
+
+  /* Club crests (crests/ folder); initials shield when a file is missing. */
   img.crest{clip-path:none;background:var(--ivory);border-radius:6px;padding:2px;width:24px;height:24px;object-fit:contain;display:inline-block}
   .mc-head img.crest{width:24px;height:24px}
   .crest{display:inline-grid;place-items:center;width:20px;height:23px;margin-right:8px;vertical-align:middle;position:relative;top:-1px;flex:none;clip-path:polygon(0 0,100% 0,100% 60%,50% 100%,0 60%);background:hsl(var(--h) 42% 34%);color:#fff;font:600 7px/1 var(--mono);letter-spacing:0;text-transform:uppercase}
   .mc-head .crest{width:18px;height:21px}
+  nav .links a::after{bottom:2px}
+  @media (hover:hover) and (pointer:fine){
+    .links-grid a:hover{transform:translateY(-2px);border-color:var(--peach)}
+    .cycle article:hover{border-color:rgba(254,177,146,.5)}
+  }
+  .links-grid a,.cycle article{transition:transform 160ms var(--ease-out,ease),border-color 160ms ease}
+  .links-grid a:active{transform:scale(.97)}
+  .hero .pitchline,.hero .mission{text-transform:none}
+
+  /* Premier League table */
+  .lp.pl-t{border-color:rgba(0,255,133,.4);background:rgba(20,0,24,.55)}
+  .lp.pl-t summary:hover{background:rgba(0,255,133,.06)}
+  .lp.pl-t .lp-arrow,.lp.pl-t td.hi{color:#00FF85}
+  .lp.pl-t .lp-body{border-top-color:rgba(0,255,133,.25)}
+  .lp.pl-t .k1,.lp.pl-t .z1 td:first-child{background:#00FF85;color:#1A0020}
+  .lp.pl-t .k2,.lp.pl-t .z2 td:first-child{background:#04F5FF;color:#1A0020}
+  .lp.pl-t .k3,.lp.pl-t .z3 td:first-child{background:#E90052;color:#fff}
+  .lp.pl-t .z0 td:first-child{color:#E3EDE7}
+  .lp.pl-t tr:nth-child(4) td,.lp.pl-t tr:nth-child(17) td{border-bottom:1px dashed rgba(255,255,255,.45)}
+  .pl .tag-link{color:#00FF85}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
-
 <a class="skip" href="#main">Skip to content</a>
-<header class="hero">
+<header class="site">
   <nav aria-label="Main">
     <a class="brand" href="#" aria-label="Pitch in Numbers, home">
       <svg viewBox="-120 -10 470 320" aria-hidden="true"><g transform="skewX(-20)">
@@ -446,15 +467,21 @@
       <a href="#contact">Contact</a>
     </div>
   </nav>
-
-  <div class="stage">
-    <div class="col left">
-      <p class="mono mission">Explaining the Premier League and Europe through data, one match at a time.</p>
+</header>
+<main id="main">
+<section class="hero" aria-labelledby="hero-title">
+  <h1 class="wordmark" id="hero-title">Pitch in Numbers</h1>
+  <div class="hero-copy">
+    <p class="mono mission">Explaining the Premier League and Europe through data, one match at a time.</p>
+    <p class="mono pitchline">A preview before kick-off and a data-driven report after the final whistle, built on xG, shot maps and match context.</p>
+    <div class="hero-actions">
+      <a class="cta mono" href="https://www.instagram.com/pitchinnumbers/">Follow the project <span aria-hidden="true">→</span></a>
       <div class="stat"><b>20</b><i class="mono">Premier League<br>clubs tracked</i></div>
     </div>
-
-    <div class="col center" aria-hidden="true">
-      <!-- half pitch, shot map: bubble size = xG, peach = goal -->
+  </div>
+  <div class="hero-art">
+    <!-- half pitch, shot map: bubble size = xG, peach = goal -->
+    <!-- half pitch, shot map: bubble size = xG, peach = goal -->
       <svg viewBox="0 0 400 430" fill="none">
         <g stroke="#EEF3EF" stroke-opacity=".85" stroke-width="2">
           <rect x="20" y="20" width="360" height="390"/>
@@ -477,10 +504,7 @@
           <circle class="shot" style="animation-delay:.82s;transform-origin:188px 150px" cx="188" cy="150" r="11" fill="#01B36C" fill-opacity=".35" stroke="#01B36C"/>
         </g>
       </svg>
-    </div>
-
-    <div class="col right">
-      <a class="next mono" href="#motw01" data-open="motw01">
+    <a class="next mono" href="#motw01" data-open="motw01">
         <svg viewBox="0 0 130 84" aria-hidden="true">
           <path d="M8 74 H30 V66 H52 V60 H64 V40 H90 V34 H104 V18 H124" stroke="#01B36C" stroke-width="2.5" fill="none"/>
           <path d="M8 74 H40 V70 H70 V58 H96 V52 H124" stroke="#8DB5A2" stroke-width="2" fill="none"/>
@@ -488,18 +512,8 @@
         </svg>
         <span>Latest · Match of the Week #01<strong>Liverpool 4-0 Man United</strong></span>
       </a>
-      <p class="mono pitchline">A preview before kick-off and a data-driven report after the final whistle, built on xG, shot maps and match context.</p>
-      <a class="cta mono" href="https://www.instagram.com/pitchinnumbers/">Follow the project <span aria-hidden="true">→</span></a>
-    </div>
-
-    <span class="plus" style="left:0;top:0;left:33.333%"></span>
-    <span class="plus" style="left:66.666%;top:0"></span>
   </div>
-
-  <h1 class="wordmark">Pitch in Numbers</h1>
-</header>
-<main id="main">
-
+</section>
 
 <section class="comp pl" id="pl" aria-labelledby="pl-title">
   <div class="comp-head mono"><span>Premier League <span class="count">[02 a week]</span></span><span>Weekends</span></div>
@@ -507,7 +521,7 @@
     <div class="cc"><div class="cl mono">Format</div><div class="cx">
       <h2 id="pl-title">Premier<br><em>League</em></h2>
       <p>The two biggest matches of every matchweek, with a preview before kick-off and a data-driven report after it.</p>
-      <ul class="tags mono"><li class="tag-hot">2 matches</li><li>xG timeline</li><li>Shot maps</li><li>Match context</li></ul>
+      <ul class="tags mono"><li class="tag-hot">2 matches</li><li>xG timeline</li><li>Shot maps</li><li>Match context</li><li><a href="#pl-table" class="tag-link" data-open="pl-table">League table ↓</a></li></ul>
     </div></div>
     <div class="cc"><div class="cl mono">Latest match report</div><div class="cx comp-art">
       <a class="mcard" href="#motw01" data-open="motw01" aria-label="Open Match of the Week 01 analysis">
@@ -594,6 +608,19 @@
         <p class="q">Would Liverpool have won 11 v 11? <a href="https://www.instagram.com/pitchinnumbers/">Tell me on Instagram</a> or <a href="https://x.com/pitchinnumbers_">X</a>.</p>
         <p class="mono src">Data: FotMob · Charts built from shot-level data · <a href="motw-01.html">Article page →</a></p>
       </div>
+    </div>
+  </details>
+
+  <details class="lp pl-t" id="pl-table">
+    <summary><span>Premier League table</span><span class="mono lp-meta">After Matchweek 11 <span class="lp-arrow" aria-hidden="true">+</span></span></summary>
+    <div class="lp-body">
+      <p class="lp-note">Match of the Week #01 was 4th v 19th: <b>Liverpool</b> are in the Champions League places, <b>Manchester United</b> are in the relegation zone with one win in eleven.</p>
+      <div class="lp-key mono"><span><i class="k1"></i>1–4 Champions League</span><span><i class="k2"></i>5 Europa League</span><span><i class="k3"></i>18–20 Relegation</span></div>
+      <div class="lp-scroll" tabindex="0" role="region" aria-label="Premier League table, scrolls sideways on small screens"><table>
+        <thead><tr><th scope="col">#</th><th scope="col">Team</th><th scope="col">P</th><th scope="col">W</th><th scope="col">D</th><th scope="col">L</th><th scope="col" class="opt">GF</th><th scope="col" class="opt">GA</th><th scope="col">GD</th><th scope="col">Pts</th></tr></thead>
+        <tbody><tr class="z1"><td>1</td><td>Arsenal</td><td>11</td><td>9</td><td>1</td><td>1</td><td class="opt">17</td><td class="opt">7</td><td>+10</td><td><b>28</b></td></tr><tr class="z1"><td>2</td><td>Brighton &amp; Hove Albion</td><td>11</td><td>7</td><td>1</td><td>3</td><td class="opt">26</td><td class="opt">9</td><td>+17</td><td><b>22</b></td></tr><tr class="z1"><td>3</td><td>Manchester City</td><td>11</td><td>7</td><td>1</td><td>3</td><td class="opt">22</td><td class="opt">14</td><td>+8</td><td><b>22</b></td></tr><tr class="z1"><td>4</td><td class="hi">Liverpool</td><td>11</td><td>6</td><td>3</td><td>2</td><td class="opt">18</td><td class="opt">10</td><td>+8</td><td><b>21</b></td></tr><tr class="z2"><td>5</td><td>AFC Bournemouth</td><td>11</td><td>5</td><td>3</td><td>3</td><td class="opt">18</td><td class="opt">14</td><td>+4</td><td><b>18</b></td></tr><tr class="z0"><td>6</td><td>Brentford</td><td>11</td><td>4</td><td>5</td><td>2</td><td class="opt">20</td><td class="opt">11</td><td>+9</td><td><b>17</b></td></tr><tr class="z0"><td>7</td><td>Leeds United</td><td>11</td><td>4</td><td>5</td><td>2</td><td class="opt">14</td><td class="opt">9</td><td>+5</td><td><b>17</b></td></tr><tr class="z0"><td>8</td><td>Chelsea</td><td>11</td><td>5</td><td>1</td><td>5</td><td class="opt">20</td><td class="opt">20</td><td>0</td><td><b>16</b></td></tr><tr class="z0"><td>9</td><td>Everton</td><td>11</td><td>4</td><td>4</td><td>3</td><td class="opt">12</td><td class="opt">14</td><td>-2</td><td><b>16</b></td></tr><tr class="z0"><td>10</td><td>Tottenham Hotspur</td><td>11</td><td>4</td><td>3</td><td>4</td><td class="opt">12</td><td class="opt">11</td><td>+1</td><td><b>15</b></td></tr><tr class="z0"><td>11</td><td>Hull City</td><td>11</td><td>3</td><td>5</td><td>3</td><td class="opt">13</td><td class="opt">11</td><td>+2</td><td><b>14</b></td></tr><tr class="z0"><td>12</td><td>Aston Villa</td><td>11</td><td>3</td><td>5</td><td>3</td><td class="opt">14</td><td class="opt">17</td><td>-3</td><td><b>14</b></td></tr><tr class="z0"><td>13</td><td>Newcastle United</td><td>11</td><td>3</td><td>4</td><td>4</td><td class="opt">15</td><td class="opt">18</td><td>-3</td><td><b>13</b></td></tr><tr class="z0"><td>14</td><td>Coventry City</td><td>11</td><td>4</td><td>0</td><td>7</td><td class="opt">13</td><td class="opt">21</td><td>-8</td><td><b>12</b></td></tr><tr class="z0"><td>15</td><td>Fulham</td><td>11</td><td>2</td><td>5</td><td>4</td><td class="opt">11</td><td class="opt">13</td><td>-2</td><td><b>11</b></td></tr><tr class="z0"><td>16</td><td>Ipswich Town</td><td>11</td><td>3</td><td>2</td><td>6</td><td class="opt">15</td><td class="opt">22</td><td>-7</td><td><b>11</b></td></tr><tr class="z0"><td>17</td><td>Nottingham Forest</td><td>11</td><td>2</td><td>3</td><td>6</td><td class="opt">9</td><td class="opt">15</td><td>-6</td><td><b>9</b></td></tr><tr class="z3"><td>18</td><td>Sunderland</td><td>11</td><td>2</td><td>3</td><td>6</td><td class="opt">8</td><td class="opt">17</td><td>-9</td><td><b>9</b></td></tr><tr class="z3"><td>19</td><td class="hi">Manchester United</td><td>11</td><td>1</td><td>5</td><td>5</td><td class="opt">14</td><td class="opt">23</td><td>-9</td><td><b>8</b></td></tr><tr class="z3"><td>20</td><td>Crystal Palace</td><td>11</td><td>2</td><td>1</td><td>8</td><td class="opt">12</td><td class="opt">27</td><td>-15</td><td><b>7</b></td></tr></tbody>
+      </table></div>
+      <p class="mono lp-src">Standings after Matchweek 11 (2026/27). Source: FotMob.</p>
     </div>
   </details>
 </section>
@@ -734,7 +761,6 @@
   <span>© 2026 Gerasimos Galanos</span>
   <span>Hosted on GitHub Pages</span>
 </footer>
-
 <script>
 (() => {
   const root = document.documentElement;
@@ -777,7 +803,7 @@
   };
   $$('[data-open]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openIt(a.dataset.open); }));
   const h = location.hash.slice(1);
-  if (['ucl-table', 'uel-table', 'motw01'].includes(h)) openIt(h);
+  if (['pl-table', 'ucl-table', 'uel-table', 'motw01'].includes(h)) openIt(h);
 
   if (!calm || !('IntersectionObserver' in window)) return;   // reduced motion: everything stays visible
 
@@ -908,7 +934,7 @@
 </script>
 <script id="crests">
 /* Club crests from crests/; falls back to an initials shield. */
-  const FILES = {"AC Milan": "crests/ac-milan.png", "AEK Athens": "crests/aek-athens.png", "AZ Alkmaar": "crests/az-alkmaar.png", "Anderlecht": "crests/anderlecht.png", "Ararat-Armenia": "crests/ararat-armenia.png", "Arsenal": "crests/arsenal.png", "Aston Villa": "crests/aston-villa.png", "Atlético Madrid": "crests/atltico-madrid.png", "Barcelona": "crests/barcelona.png", "Bayer Leverkusen": "crests/bayer-leverkusen.png", "Bayern Munich": "crests/bayern-munich.png", "Benfica": "crests/benfica.png", "Beşiktaş": "crests/beikta.png", "Bodø/Glimt": "crests/bod-glimt.png", "Borussia Dortmund": "crests/borussia-dortmund.png", "Bournemouth": "crests/bournemouth.png", "Celje": "crests/celje.png", "Celta Vigo": "crests/celta-vigo.png", "Celtic": "crests/celtic.png", "Club Brugge": "crests/club-brugge.png", "Como": "crests/como.png", "Crystal Palace": "crests/crystal-palace.png", "Dinamo Zagreb": "crests/dinamo-zagreb.png", "Fenerbahçe": "crests/fenerbahe.png", "Ferencváros": "crests/ferencvros.png", "Feyenoord": "crests/feyenoord.png", "Galatasaray": "crests/galatasaray.png", "Hapoel Be'er Sheva": "crests/hapoel-be-er-sheva.png", "Hoffenheim": "crests/hoffenheim.png", "Inter": "crests/inter.png", "Jagiellonia": "crests/jagiellonia.png", "Juventus": "crests/juventus.png", "LASK": "crests/lask.png", "Lech Poznań": "crests/lech-pozna.png", "Lens": "crests/lens.png", "Levski Sofia": "crests/levski-sofia.png", "Lille": "crests/lille.png", "Lillestrøm": "crests/lillestrm.png", "Liverpool": "crests/liverpool.png", "Lyon": "crests/lyon.png", "Man United": "crests/man-united.png", "Manchester United": "crests/manchester-united.png", "Manchester City": "crests/manchester-city.png", "Marseille": "crests/marseille.png", "NEC": "crests/nec.png", "Napoli": "crests/napoli.png", "OFI Crete": "crests/ofi-crete.png", "Olympiacos": "crests/olympiacos.png", "Omonia": "crests/omonia.png", "PSV Eindhoven": "crests/psv-eindhoven.png", "Paris Saint-Germain": "crests/paris-saint-germain.png", "Porto": "crests/porto.png", "RB Leipzig": "crests/rb-leipzig.png", "Real Betis": "crests/real-betis.png", "Real Madrid": "crests/real-madrid.png", "Real Sociedad": "crests/real-sociedad.png", "Red Bull Salzburg": "crests/red-bull-salzburg.png", "Rennes": "crests/rennes.png", "Roma": "crests/roma.png", "Sabah": "crests/sabah.png", "Shakhtar Donetsk": "crests/shakhtar-donetsk.png", "Slavia Prague": "crests/slavia-prague.png", "Slovan Bratislava": "crests/slovan-bratislava.png", "Sparta Prague": "crests/sparta-prague.png", "Sporting CP": "crests/sporting-cp.png", "Sturm Graz": "crests/sturm-graz.png", "Stuttgart": "crests/stuttgart.png", "Sunderland": "crests/sunderland.png", "Torreense": "crests/torreense.png", "Viking": "crests/viking.png", "Viktoria Plzeň": "crests/viktoria-plze.png", "Villarreal": "crests/villarreal.png"};
+  const FILES = {"Brighton & Hove Albion": "crests/brighton.png", "Brentford": "crests/brentford.png", "Leeds United": "crests/leeds-united.png", "Chelsea": "crests/chelsea.png", "Everton": "crests/everton.png", "Tottenham Hotspur": "crests/tottenham-hotspur.png", "Hull City": "crests/hull-city.png", "Newcastle United": "crests/newcastle-united.png", "Coventry City": "crests/coventry-city.png", "Fulham": "crests/fulham.png", "Ipswich Town": "crests/ipswich-town.png", "Nottingham Forest": "crests/nottingham-forest.png", "Union SG": "crests/union-sg.png", "AFC Bournemouth": "crests/bournemouth.png", "AC Milan": "crests/ac-milan.png", "AEK Athens": "crests/aek-athens.png", "AZ Alkmaar": "crests/az-alkmaar.png", "Anderlecht": "crests/anderlecht.png", "Ararat-Armenia": "crests/ararat-armenia.png", "Arsenal": "crests/arsenal.png", "Aston Villa": "crests/aston-villa.png", "Atlético Madrid": "crests/atltico-madrid.png", "Barcelona": "crests/barcelona.png", "Bayer Leverkusen": "crests/bayer-leverkusen.png", "Bayern Munich": "crests/bayern-munich.png", "Benfica": "crests/benfica.png", "Beşiktaş": "crests/beikta.png", "Bodø/Glimt": "crests/bod-glimt.png", "Borussia Dortmund": "crests/borussia-dortmund.png", "Bournemouth": "crests/bournemouth.png", "Celje": "crests/celje.png", "Celta Vigo": "crests/celta-vigo.png", "Celtic": "crests/celtic.png", "Club Brugge": "crests/club-brugge.png", "Como": "crests/como.png", "Crystal Palace": "crests/crystal-palace.png", "Dinamo Zagreb": "crests/dinamo-zagreb.png", "Fenerbahçe": "crests/fenerbahe.png", "Ferencváros": "crests/ferencvros.png", "Feyenoord": "crests/feyenoord.png", "Galatasaray": "crests/galatasaray.png", "Hapoel Be'er Sheva": "crests/hapoel-be-er-sheva.png", "Hoffenheim": "crests/hoffenheim.png", "Inter": "crests/inter.png", "Jagiellonia": "crests/jagiellonia.png", "Juventus": "crests/juventus.png", "LASK": "crests/lask.png", "Lech Poznań": "crests/lech-pozna.png", "Lens": "crests/lens.png", "Levski Sofia": "crests/levski-sofia.png", "Lille": "crests/lille.png", "Lillestrøm": "crests/lillestrm.png", "Liverpool": "crests/liverpool.png", "Lyon": "crests/lyon.png", "Man United": "crests/man-united.png", "Manchester United": "crests/manchester-united.png", "Manchester City": "crests/manchester-city.png", "Marseille": "crests/marseille.png", "NEC": "crests/nec.png", "Napoli": "crests/napoli.png", "OFI Crete": "crests/ofi-crete.png", "Olympiacos": "crests/olympiacos.png", "Omonia": "crests/omonia.png", "PSV Eindhoven": "crests/psv-eindhoven.png", "Paris Saint-Germain": "crests/paris-saint-germain.png", "Porto": "crests/porto.png", "RB Leipzig": "crests/rb-leipzig.png", "Real Betis": "crests/real-betis.png", "Real Madrid": "crests/real-madrid.png", "Real Sociedad": "crests/real-sociedad.png", "Red Bull Salzburg": "crests/red-bull-salzburg.png", "Rennes": "crests/rennes.png", "Roma": "crests/roma.png", "Sabah": "crests/sabah.png", "Shakhtar Donetsk": "crests/shakhtar-donetsk.png", "Slavia Prague": "crests/slavia-prague.png", "Slovan Bratislava": "crests/slovan-bratislava.png", "Sparta Prague": "crests/sparta-prague.png", "Sporting CP": "crests/sporting-cp.png", "Sturm Graz": "crests/sturm-graz.png", "Stuttgart": "crests/stuttgart.png", "Sunderland": "crests/sunderland.png", "Torreense": "crests/torreense.png", "Viking": "crests/viking.png", "Viktoria Plzeň": "crests/viktoria-plze.png", "Villarreal": "crests/villarreal.png"};
 (() => {
   const mk = name => {
     if (FILES[name]) { const i = document.createElement('img'); i.className = 'crest'; i.alt = ''; i.src = FILES[name]; i.width = 24; i.height = 24; i.decoding = 'async'; return i; }
@@ -932,5 +958,6 @@
   });
 })();
 </script>
+
 </body>
 </html>
